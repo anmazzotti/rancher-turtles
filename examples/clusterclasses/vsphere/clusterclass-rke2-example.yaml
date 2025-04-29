@@ -57,63 +57,60 @@ spec:
       openAPIV3Schema:
         description: kube-vip manifest for the control plane.
         type: string
-  - name: infraServer
+  - name: vSphereTLSThumbprint
     required: true
     schema:
       openAPIV3Schema:
-        properties:
-          thumbprint:
-            type: string
-          url:
-            type: string
-        type: object
-  - name: credsSecretName
-    required: true
-    schema:
-      openAPIV3Schema:
-        description: Secret containing the credentials for the infra cluster.
+        description: "sha256 thumbprint of the vcenter certificate: openssl x509 -sha256 -fingerprint -in ca.crt -noout"
         type: string
-  - name: vsphereServer
+  - name: vSphereClusterIdentityName
     required: true
     schema:
       openAPIV3Schema:
-        description: vSphere server
+        description: The VSphereClusterIdentity resource name referencing the credentials to create the Cluster.
         type: string
-  - name: vsphereDataCenter
+        default: cluster-identity
+  - name: vSphereServer
     required: true
     schema:
       openAPIV3Schema:
-        description: vSphere data center
+        description: The vCenter server IP or FQDN.
         type: string
-  - name: vsphereResourcePool
+  - name: vSphereDataCenter
     required: true
     schema:
       openAPIV3Schema:
-        description: vSphere resource pool
+        description: The vSphere datacenter to deploy the Cluster on.
         type: string
-  - name: vsphereDataStore
+  - name: vSphereResourcePool
     required: true
     schema:
       openAPIV3Schema:
-        description: vSphere data store
+        description: The vSphere resource pool for your VMs.
         type: string
-  - name: vsphereNetwork
+  - name: vSphereDataStore
     required: true
     schema:
       openAPIV3Schema:
-        description: vSphere network name
+        description: The vSphere datastore to deploy the Cluster on.
         type: string
-  - name: vsphereFolder
+  - name: vSphereNetwork
     required: true
     schema:
       openAPIV3Schema:
-        description: vSphere folder name
+        description: The VM network to deploy the Cluster on.
         type: string
-  - name: vsphereTemplate
+  - name: vSphereFolder
     required: true
     schema:
       openAPIV3Schema:
-        description: vSphere machine template
+        description: The VM folder for your VMs. Set to "" to use the root vSphere folder.
+        type: string
+  - name: vSphereTemplate
+    required: true
+    schema:
+      openAPIV3Schema:
+        description: The VM template to use for your Cluster.
         type: string
   patches:
   - name: infraCluster
@@ -126,19 +123,17 @@ spec:
             host: '{{ .controlPlaneIpAddr }}'
             port: {{ .controlPlanePort }}
       - op: add
-        path: /spec/template/spec/identityRef
+        path: /spec/template/spec/identityRef/name
         valueFrom:
-          template: |
-            kind: Secret
-            name: '{{ .credsSecretName }}'
+          variable: vSphereClusterIdentityName
       - op: add
         path: /spec/template/spec/server
         valueFrom:
-          variable: infraServer.url
+          variable: vSphereServer
       - op: add
         path: /spec/template/spec/thumbprint
         valueFrom:
-          variable: infraServer.thumbprint
+          variable: vSphereTLSThumbprint
       selector:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: VSphereClusterTemplate
@@ -151,23 +146,16 @@ spec:
         path: /spec/template/spec
         valueFrom:
           template: |
-            cloneMode: linkedClone
-            datacenter: '{{ .vsphereDataCenter }}'
-            datastore: '{{ .vsphereDataStore }}'
-            diskGiB: 25
-            folder: '{{ .vsphereFolder }}'
-            memoryMiB: 8192
+            datacenter: '{{ .vSphereDataCenter }}'
+            datastore: '{{ .vSphereDataStore }}'
+            folder: '{{ .vSphereFolder }}'
             network:
               devices:
               - dhcp4: true
-                networkName: '{{ .vsphereNetwork }}'
-            numCPUs: 2
-            os: Linux
-            powerOffMode: trySoft
-            resourcePool: '{{ .vsphereResourcePool }}'
-            server: '{{ .vsphereServer }}'
-            storagePolicyName: ''
-            template: '{{ .vsphereTemplate }}'
+                networkName: '{{ .vSphereNetwork }}'
+            resourcePool: '{{ .vSphereResourcePool }}'
+            server: '{{ .vSphereServer }}'
+            template: '{{ .vSphereTemplate }}'
       selector:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: VSphereMachineTemplate
@@ -178,23 +166,16 @@ spec:
         path: /spec/template/spec
         valueFrom:
           template: |
-            cloneMode: linkedClone
-            datacenter: '{{ .vsphereDataCenter }}'
-            datastore: '{{ .vsphereDataStore }}'
-            diskGiB: 25
-            folder: '{{ .vsphereFolder }}'
-            memoryMiB: 8192
+            datacenter: '{{ .vSphereDataCenter }}'
+            datastore: '{{ .vSphereDataStore }}'
+            folder: '{{ .vSphereFolder }}'
             network:
               devices:
               - dhcp4: true
-                networkName: '{{ .vsphereNetwork }}'
-            numCPUs: 2
-            os: Linux
-            powerOffMode: trySoft
-            resourcePool: '{{ .vsphereResourcePool }}'
-            server: '{{ .vsphereServer }}'
-            storagePolicyName: ''
-            template: '{{ .vsphereTemplate }}'
+                networkName: '{{ .vSphereNetwork }}'
+            resourcePool: '{{ .vSphereResourcePool }}'
+            server: '{{ .vSphereServer }}'
+            template: '{{ .vSphereTemplate }}'
       selector:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: VSphereMachineTemplate
@@ -205,24 +186,24 @@ spec:
   - name: rke2ControlPlaneTemplate
     definitions:
     - jsonPatches:
-      - op: add
-        path: /spec/template/spec/files
-        value: 
-        - path: "/var/lib/rancher/rke2/server/manifests/coredns-config.yaml"
-          owner: "root:root"
-          permissions: "0640"
-          content: |
-              apiVersion: helm.cattle.io/v1
-              kind: HelmChartConfig
-              metadata:
-                name: rke2-coredns
-                namespace: kube-system
-              spec:
-                valuesContent: |
-                  tolerations:
-                    - key: "node.cloudprovider.kubernetes.io/uninitialized"
-                      value: "true"
-                      effect: "NoSchedule"
+      # - op: add
+      #   path: /spec/template/spec/files
+      #   value: 
+      #   - path: "/var/lib/rancher/rke2/server/manifests/coredns-config.yaml"
+      #     owner: "root:root"
+      #     permissions: "0640"
+      #     content: |
+      #         apiVersion: helm.cattle.io/v1
+      #         kind: HelmChartConfig
+      #         metadata:
+      #           name: rke2-coredns
+      #           namespace: kube-system
+      #         spec:
+      #           valuesContent: |
+      #             tolerations:
+      #               - key: "node.cloudprovider.kubernetes.io/uninitialized"
+      #                 value: "true"
+      #                 effect: "NoSchedule"
       - op: add
         path: /spec/template/spec/files
         valueFrom:
@@ -231,11 +212,41 @@ spec:
               owner: "root:root"
               permissions: "0640"
               content: {{ printf  "%q" .kubeVipPodManifest }}
+      - op: add
+        path: /spec/template/spec/agentConfig/additionalUserData
+        valueFrom:
+          template: |-
+            config: |-
+              users:
+                - name: capv
+                  sudo: ALL=(ALL) NOPASSWD:ALL
+                  ssh-authorized-keys:
+                  - {{ .sshKey }}   
       selector:
         apiVersion: controlplane.cluster.x-k8s.io/v1beta1
         kind: RKE2ControlPlaneTemplate
         matchResources:
           controlPlane: true
+  - name: rke2ConfigTemplate
+    definitions:
+    - jsonPatches:
+      - op: add
+        path: /spec/template/spec/agentConfig/additionalUserData
+        valueFrom:
+          template: |-
+            config: |-
+              users:
+                - name: capv
+                  sudo: ALL=(ALL) NOPASSWD:ALL
+                  ssh-authorized-keys:
+                  - {{ .sshKey }}   
+      selector:
+        apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+        kind: RKE2ConfigTemplate
+        matchResources:
+          machineDeploymentClass:
+            names:
+            - vsphere-rke2-example-worker
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: VSphereClusterTemplate
@@ -243,7 +254,10 @@ metadata:
   name: vsphere-rke2-example
 spec:
   template:
-    spec: {}
+    spec:
+      identityRef:
+        kind: VSphereClusterIdentity
+        name: cluster-identity
 ---
 apiVersion: controlplane.cluster.x-k8s.io/v1beta1
 kind: RKE2ControlPlaneTemplate
@@ -252,19 +266,13 @@ metadata:
 spec:
   template:
     spec:
+      agentConfig: {}
       serverConfig:
+        cni: none
+        cloudProviderName: external
         disableComponents:
           kubernetesComponents:
           - cloudController
-      replicas: 1
-      nodeDrainTimeout: 2m
-      preRKE2Commands:
-        - sleep 30 #fix to give OS time to become ready
-      agentConfig:
-        kubelet:
-          extraArgs:
-          - --cloud-provider=external
-      registrationMethod: internal-first
       rolloutStrategy:
         type: "RollingUpdate"
         rollingUpdate:
@@ -277,8 +285,6 @@ metadata:
 spec: 
   template:
     spec:
-      preRKE2Commands:
-        - sleep 30 # fix to give OS time to become ready
       agentConfig:
         kubelet:
           extraArgs:
@@ -297,18 +303,15 @@ spec:
       diskGiB: 25
       folder: 'set-by-patch'
       memoryMiB: 8192
-      network:
-        devices:
-        - dhcp4: true
-          networkName: 'set-by-patch'
       numCPUs: 2
       os: Linux
       powerOffMode: trySoft
       resourcePool: 'set-by-patch'
       server: 'set-by-patch'
-      storagePolicyName: ""
       template: 'set-by-patch'
       thumbprint: 'set-by-patch'
+      network:
+        devices: []
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: VSphereMachineTemplate
@@ -323,15 +326,12 @@ spec:
       diskGiB: 25
       folder: 'set-by-patch'
       memoryMiB: 8192
-      network:
-        devices:
-        - dhcp4: true
-          networkName: 'set-by-patch'
       numCPUs: 2
       os: Linux
       powerOffMode: trySoft
       resourcePool: 'set-by-patch'
       server: 'set-by-patch'
-      storagePolicyName: ""
       template: 'set-by-patch'
       thumbprint: 'set-by-patch'
+      network: 
+        devices: []
