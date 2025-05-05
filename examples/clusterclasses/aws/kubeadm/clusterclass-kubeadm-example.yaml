@@ -47,6 +47,7 @@ spec:
           items: 
             type: object
             additionalProperties: 
+              type: object
               id: string
     - name: region
       required: true
