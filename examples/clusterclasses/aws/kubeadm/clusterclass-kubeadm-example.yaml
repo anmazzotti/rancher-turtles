@@ -45,7 +45,8 @@ spec:
         openAPIV3Schema:
           type: array
           items: 
-            type: string
+            properties: 
+              id: string
     - name: region
       required: true
       schema:
@@ -92,9 +93,13 @@ spec:
               infrastructureCluster: true
           jsonPatches:
             - op: add
-              path: /spec/template/spec/network/vpc
+              path: /spec/template/spec/network/vpc/id
               valueFrom:
                 variable: vpc
+            - op: add
+              path: /spec/template/spec/network/subnets
+              valueFrom:
+                variable: subnets
     - name: sshKeyName
       definitions:
         - selector:
@@ -155,7 +160,6 @@ spec:
   template:
     spec:
       network:
-          vpc: ''
           cni:
             cniIngressRules:
               - description: BGP
