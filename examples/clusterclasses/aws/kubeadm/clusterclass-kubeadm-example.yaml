@@ -46,8 +46,9 @@ spec:
           type: array
           items: 
             type: Object
-            additionalProperties:
-              id: string
+            properties:
+              id: 
+                type: string
     - name: region
       required: true
       schema:
