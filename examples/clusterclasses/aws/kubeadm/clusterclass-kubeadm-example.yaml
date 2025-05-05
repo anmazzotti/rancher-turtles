@@ -33,6 +33,18 @@ spec:
               kind: AWSMachineTemplate
               name: aws-kubeadm-example-worker-machinetemplate
   variables:
+    - name: vpc
+      required: true
+      schema:
+        openAPIV3Schema:
+          type: string
+    - name: subnets
+      required: false
+      schema:
+        openAPIV3Schema:
+          type: array
+          items: 
+            type: string
     - name: region
       required: true
       schema:
@@ -70,6 +82,22 @@ spec:
               path: /spec/template/spec/region
               valueFrom:
                 variable: region
+    - name: networking
+      definitions:
+        - selector:
+            apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+            kind: AWSClusterTemplate
+            matchResources:
+              infrastructureCluster: true
+            jsonPatches:
+            - op: add
+              path: /spec/template/spec/network/vpc
+              valueFrom:
+                variable: vpc
+            - op: add
+              path: /spec/template/spec/network/subnets
+              valueFrom:
+                variable: subnets
     - name: sshKeyName
       definitions:
         - selector:
