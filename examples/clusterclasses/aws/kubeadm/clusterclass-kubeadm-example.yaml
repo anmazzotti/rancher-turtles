@@ -45,6 +45,7 @@ spec:
         openAPIV3Schema:
           type: array
           items: 
+            type: object
             properties: 
               id: string
     - name: region
