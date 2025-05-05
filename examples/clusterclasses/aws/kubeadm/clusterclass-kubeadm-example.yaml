@@ -94,7 +94,7 @@ spec:
               path: /spec/template/spec/network/vpc
               valueFrom:
                 variable: vpc
-            - op: add
+            - op: replace
               path: /spec/template/spec/network/subnets
               valueFrom:
                 variable: subnets
@@ -158,6 +158,8 @@ spec:
   template:
     spec:
       network:
+          subnets:
+            - to_be_replaced
           cni:
             cniIngressRules:
               - description: BGP
