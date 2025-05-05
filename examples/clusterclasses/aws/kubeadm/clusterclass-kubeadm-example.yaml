@@ -89,7 +89,7 @@ spec:
             kind: AWSClusterTemplate
             matchResources:
               infrastructureCluster: true
-            jsonPatches:
+          jsonPatches:
             - op: add
               path: /spec/template/spec/network/vpc
               valueFrom:
