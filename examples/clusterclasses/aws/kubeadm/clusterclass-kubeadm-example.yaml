@@ -48,7 +48,9 @@ spec:
             type: object
             additionalProperties: 
               type: object
-              id: string
+              properties:
+                id: 
+                type: string
     - name: region
       required: true
       schema:
