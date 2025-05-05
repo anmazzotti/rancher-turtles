@@ -58,13 +58,13 @@ spec:
       schema:
         openAPIV3Schema:
           type: string
-          default: us-east-1
+          default: eu-west-1
     - name: sshKeyName
       required: true
       schema:
         openAPIV3Schema:
           type: string
-          default: default
+          default: nb-eu-west1
     - name: controlPlaneMachineType
       required: true
       schema:
