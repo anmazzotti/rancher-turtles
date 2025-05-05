@@ -45,7 +45,7 @@ spec:
         openAPIV3Schema:
           type: array
           items: 
-            type: Object
+            type: object
             properties:
               id: 
                 type: string
