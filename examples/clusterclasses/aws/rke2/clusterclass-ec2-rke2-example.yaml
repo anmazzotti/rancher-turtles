@@ -49,7 +49,8 @@ spec:
     schema:
       openAPIV3Schema:
         type: array
-
+        items: 
+          - ''
   - name: sshKeyName
     required: true
     schema:
