@@ -45,12 +45,9 @@ spec:
         openAPIV3Schema:
           type: array
           items: 
-            type: object
-            additionalProperties: 
-              type: object
-              properties:
-                id: 
-                type: string
+            type: Object
+            additionalProperties:
+              id: string
     - name: region
       required: true
       schema:
