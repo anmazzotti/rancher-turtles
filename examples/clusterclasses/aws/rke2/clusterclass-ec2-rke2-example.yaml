@@ -45,12 +45,11 @@ spec:
       openAPIV3Schema:
         type: string
   - name: subnets
-    required: true
+    required: false
     schema:
       openAPIV3Schema:
         type: array
-        default:
-        - ''
+
   - name: sshKeyName
     required: true
     schema:
