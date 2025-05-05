@@ -50,7 +50,7 @@ spec:
       openAPIV3Schema:
         type: array
         items: 
-          - ''
+          type: string
   - name: sshKeyName
     required: true
     schema:
