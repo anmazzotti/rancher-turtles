@@ -49,6 +49,8 @@ spec:
             properties:
               id: 
                 type: string
+              availabilityZone: string
+              isPublic: boolean
     - name: region
       required: true
       schema:
