@@ -155,6 +155,7 @@ spec:
   template:
     spec:
       network:
+          vpc: ''
           cni:
             cniIngressRules:
               - description: BGP
