@@ -94,10 +94,6 @@ spec:
               path: /spec/template/spec/network/vpc
               valueFrom:
                 variable: vpc
-            - op: add
-              path: /spec/template/spec/network/subnets
-              valueFrom:
-                variable: subnets
     - name: sshKeyName
       definitions:
         - selector:
