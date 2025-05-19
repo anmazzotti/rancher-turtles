@@ -120,12 +120,13 @@ spec:
             - ""
     # rke2controlplane.serverConfig.etcd
     # create a toggle component for etcd backup configuration
-    - name: automaticEtcdBackup
+    - name: toggleEtcdBackup
       default: true
       metadata:
         annotations: 
           turtles-capi.cattle.io/section: 'controlplane'
           turtles-capi.cattle.io/group: 'ETCD Backup'
+          turtles-capi.cattle.io/label: 'Enable Automatic ETCD Backup'
       schema:
         openAPIV3Schema:
           description: "Configure how RKE2 will back  up ETCD"
@@ -136,7 +137,7 @@ spec:
         annotations: 
           turtles-capi.cattle.io/section: 'controlplane'
           turtles-capi.cattle.io/group: 'ETCD Backup'
-          turtles-capi.cattle.io/toggled-by: 'automaticEtcdBackup'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
       schema:
         openAPIV3Schema:
           description: "Snapshot interval time in cron spec. eg. every 5 hours '* */5 * * *'"
@@ -148,7 +149,7 @@ spec:
         annotations: 
           turtles-capi.cattle.io/section: 'controlplane'
           turtles-capi.cattle.io/group: 'ETCD Backup'
-          turtles-capi.cattle.io/toggled-by: 'automaticEtcdBackup'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
       schema:
         openAPIV3Schema:
           description: "Number of snapshots to retain"
@@ -166,7 +167,7 @@ spec:
     #         - op: add
     #           path: "/spec/template/spec/serverConfig/etcd/backupConfig/disableAutomaticSnapshots"
     #           valueFrom:
-    #             variable: automaticEtcdBackup
+    #             variable: toggleEtcdBackup
     #         - op: add
     #           path: "/spec/template/spec/serverConfig/etcd/backupConfig/scheduleCron"
     #           valueFrom:
