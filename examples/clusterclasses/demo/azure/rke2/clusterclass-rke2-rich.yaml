@@ -132,6 +132,7 @@ spec:
           turtles-capi.cattle.io/section: 'controlplane'
           turtles-capi.cattle.io/group: 'ETCD Backup'
           turtles-capi.cattle.io/label: 'Enable Automatic ETCD Backup'
+          turtles-capi.cattle.io/toggle-group: true
       schema:
         openAPIV3Schema:
           description: "Configure how RKE2 will back  up ETCD"
