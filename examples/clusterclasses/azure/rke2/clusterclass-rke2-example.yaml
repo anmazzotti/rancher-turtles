@@ -103,6 +103,9 @@ spec:
           default: "Standard_D2s_v3"
     - name: registrationMethod
       required: true
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'controlplane'
       schema:
         openAPIV3Schema:
           description: "Registration method to use. Defaults to control-plane endpoint (empty string). Immutable once is set."
