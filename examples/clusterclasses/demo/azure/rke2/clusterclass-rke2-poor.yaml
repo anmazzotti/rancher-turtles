@@ -1,7 +1,7 @@
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: ClusterClass
 metadata:
-  name: demo-poor-azure-rke2-example
+  name: demo-poor-azure-clusterclass
 spec:
   controlPlane:
     ref:
