@@ -36,8 +36,8 @@ spec:
     - name: subscriptionID
       required: true
       metadata: 
-        labels:
-          turtles-capi.cattle.io/group: 'Access'
+        annotations:
+          turtles-capi.cattle.io/section: 'general'
       schema:
         openAPIV3Schema:
           description: "The Azure Subscription ID where the Cluster will be created."
@@ -67,8 +67,8 @@ spec:
     - name: azureClusterIdentityName
       required: true
       metadata: 
-        labels:
-          turtles-capi.cattle.io/group: 'Access'
+        annotations:
+          turtles-capi.cattle.io/section: 'general'
       schema:
         openAPIV3Schema:
           description: "The AzureClusterIdentity resource name referencing the credentials to create the Cluster."
@@ -77,7 +77,7 @@ spec:
     - name: imageGallery
       required: true
       metadata: 
-        labels:
+        annotations:
           turtles-capi.cattle.io/group: 'Image'
       schema:
         openAPIV3Schema:
@@ -86,7 +86,7 @@ spec:
           default: "ClusterAPI-f72ceb4f-5159-4c26-a0fe-2ea738f0d019"
     - name: imageName
       metadata: 
-        labels:
+        annotations:
           turtles-capi.cattle.io/group: 'Image'
       required: true
       schema:
