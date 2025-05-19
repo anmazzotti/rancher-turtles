@@ -120,41 +120,41 @@ spec:
             - ""
     # rke2controlplane.serverConfig.etcd
     # create a toggle component for etcd backup configuration
-    - name: toggleEtcdBackup
-      metadata:
-        annotations: 
-          turtles-capi.cattle.io/section: 'controlplane'
-          turtles-capi.cattle.io/group: 'ETCD Backup'
-          turtles-capi.cattle.io/label: 'Enable Automatic ETCD Backup'
-      schema:
-        openAPIV3Schema:
-          description: "Configure how RKE2 will back  up ETCD"
-          type: boolean
-          default: true
-    - name: etcdBackupScheduleCron
-      required: false
-      metadata:
-        annotations: 
-          turtles-capi.cattle.io/section: 'controlplane'
-          turtles-capi.cattle.io/group: 'ETCD Backup'
-          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
-      schema:
-        openAPIV3Schema:
-          description: "Snapshot interval time in cron spec. eg. every 5 hours '* */5 * * *'"
-          type: string
-          example: "0 */12 * * *"
-    - name: etcdBackupRetention
-      required: false
-      metadata:
-        annotations: 
-          turtles-capi.cattle.io/section: 'controlplane'
-          turtles-capi.cattle.io/group: 'ETCD Backup'
-          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
-      schema:
-        openAPIV3Schema:
-          description: "Number of snapshots to retain"
-          type: string
-          example: "5"
+    # - name: toggleEtcdBackup
+    #   metadata:
+    #     annotations: 
+    #       turtles-capi.cattle.io/section: 'controlplane'
+    #       turtles-capi.cattle.io/group: 'ETCD Backup'
+    #       turtles-capi.cattle.io/label: 'Enable Automatic ETCD Backup'
+    #   schema:
+    #     openAPIV3Schema:
+    #       description: "Configure how RKE2 will back  up ETCD"
+    #       type: boolean
+    #       default: true
+    # - name: etcdBackupScheduleCron
+    #   required: false
+    #   metadata:
+    #     annotations: 
+    #       turtles-capi.cattle.io/section: 'controlplane'
+    #       turtles-capi.cattle.io/group: 'ETCD Backup'
+    #       turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
+    #   schema:
+    #     openAPIV3Schema:
+    #       description: "Snapshot interval time in cron spec. eg. every 5 hours '* */5 * * *'"
+    #       type: string
+    #       example: "0 */12 * * *"
+    # - name: etcdBackupRetention
+    #   required: false
+    #   metadata:
+    #     annotations: 
+    #       turtles-capi.cattle.io/section: 'controlplane'
+    #       turtles-capi.cattle.io/group: 'ETCD Backup'
+    #       turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
+    #   schema:
+    #     openAPIV3Schema:
+    #       description: "Number of snapshots to retain"
+    #       type: string
+    #       example: "5"
   patches:
     # - name: rke2ControlPlaneTemplate
     #   definitions:
