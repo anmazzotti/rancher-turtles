@@ -156,26 +156,26 @@ spec:
           type: string
           example: "5"
   patches:
-    # - name: rke2ControlPlaneTemplate
-    #   definitions:
-    #     - selector:
-    #         apiVersion: controlplane.cluster.x-k8s.io/v1beta1
-    #         kind: RKE2ControlPlaneTemplate
-    #         matchResources:
-    #           controlPlane: true
-    #       jsonPatches:
-    #         - op: add
-    #           path: "/spec/template/spec/serverConfig/etcd/backupConfig/disableAutomaticSnapshots"
-    #           valueFrom:
-    #             variable: toggleEtcdBackup
-    #         - op: add
-    #           path: "/spec/template/spec/serverConfig/etcd/backupConfig/scheduleCron"
-    #           valueFrom:
-    #             variable: etcdBackupScheduleCron
-    #         - op: add
-    #           path: "/spec/template/spec/serverConfig/etcd/backupConfig/retention"
-    #           valueFrom:
-    #             variable: etcdBackupRetention
+    - name: rke2ControlPlaneTemplate
+      definitions:
+        - selector:
+            apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+            kind: RKE2ControlPlaneTemplate
+            matchResources:
+              controlPlane: true
+          jsonPatches:
+            - op: add
+              path: "/spec/template/spec/serverConfig/etcd/backupConfig/disableAutomaticSnapshots"
+              valueFrom:
+                variable: toggleEtcdBackup
+            - op: add
+              path: "/spec/template/spec/serverConfig/etcd/backupConfig/scheduleCron"
+              valueFrom:
+                variable: etcdBackupScheduleCron
+            - op: add
+              path: "/spec/template/spec/serverConfig/etcd/backupConfig/retention"
+              valueFrom:
+                variable: etcdBackupRetention
     - name: azureClusterTemplate
       definitions:
         - selector:
