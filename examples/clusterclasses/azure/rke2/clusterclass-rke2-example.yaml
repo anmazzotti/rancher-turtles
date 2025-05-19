@@ -44,6 +44,9 @@ spec:
           type: string
     - name: location
       required: true
+      metadata: 
+        annotations:
+          turtles-capi.cattle.io/section: 'general'
       schema:
         openAPIV3Schema:
           description: "The Azure location where the Cluster will be created."
@@ -60,6 +63,9 @@ spec:
             - westus2
     - name: resourceGroup
       required: true
+      metadata: 
+        annotations:
+          turtles-capi.cattle.io/section: 'general'
       schema:
         openAPIV3Schema:
           description: "The Azure Resource Group where the Cluster will be created."
@@ -76,18 +82,12 @@ spec:
           default: "cluster-identity"
     - name: imageGallery
       required: true
-      metadata: 
-        annotations:
-          turtles-capi.cattle.io/group: 'Image'
       schema:
         openAPIV3Schema:
           description: "The image Public gallery name."
           type: string
           default: "ClusterAPI-f72ceb4f-5159-4c26-a0fe-2ea738f0d019"
     - name: imageName
-      metadata: 
-        annotations:
-          turtles-capi.cattle.io/group: 'Image'
       required: true
       schema:
         openAPIV3Schema:
