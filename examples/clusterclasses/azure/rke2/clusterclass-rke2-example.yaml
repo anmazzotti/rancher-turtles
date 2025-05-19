@@ -164,6 +164,27 @@ spec:
               controlPlane: true
           jsonPatches:
             - op: add
+              path: "/spec/template/spec/serverConfig/etcd/backupConfig/disableAutomaticSnapshots"
+              valueFrom:
+              # TODO nb backwards
+                variable: automaticEtcdBackup
+            - op: add
+              path: "/spec/template/spec/serverConfig/etcd/backupConfig/scheduleCron"
+              valueFrom:
+                variable: etcdBackupScheduleCron
+            - op: add
+              path: "/spec/template/spec/serverConfig/etcd/backupConfig/retention"
+              valueFrom:
+                variable: etcdBackupRetention
+    - name: azureClusterTemplate
+      definitions:
+        - selector:
+            apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+            kind: AzureClusterTemplate
+            matchResources:
+              infrastructureCluster: true
+          jsonPatches:
+            - op: add
               path: "/spec/template/spec/subscriptionID"
               valueFrom:
                 variable: subscriptionID
@@ -183,27 +204,6 @@ spec:
               path: "/spec/template/spec/networkSpec/vnet/name"
               valueFrom:
                 variable: builtin.cluster.name
-    - name: azureClusterTemplate
-      definitions:
-        - selector:
-            apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
-            kind: AzureClusterTemplate
-            matchResources:
-              infrastructureCluster: true
-          jsonPatches:
-            - op: add
-              path: "/spec/template/spec/serverConfig/etcd/backupConfig/disableAutomaticSnapshots"
-              valueFrom:
-              # TODO nb backwards
-                variable: automaticEtcdBackup
-            - op: add
-              path: "/spec/template/spec/serverConfig/etcd/backupConfig/scheduleCron"
-              valueFrom:
-                variable: etcdBackupScheduleCron
-            - op: add
-              path: "/spec/template/spec/serverConfig/etcd/backupConfig/retention"
-              valueFrom:
-                variable: etcdBackupRetention
     - name: azureMachineTemplate
       definitions:
         - selector:
