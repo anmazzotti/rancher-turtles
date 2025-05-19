@@ -115,6 +115,7 @@ spec:
               path: /spec/template/spec/image/computeGallery/version
               valueFrom:
                 template: '{{ trimPrefix "v" (trimSuffix "+rke2r1" .builtin.cluster.topology.version) }}'
+---
 apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
 kind: RKE2ConfigTemplate
 metadata:
