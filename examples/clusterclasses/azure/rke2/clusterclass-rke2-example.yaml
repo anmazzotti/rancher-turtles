@@ -121,7 +121,6 @@ spec:
     # rke2controlplane.serverConfig.etcd
     # create a toggle component for etcd backup configuration
     - name: toggleEtcdBackup
-      default: true
       metadata:
         annotations: 
           turtles-capi.cattle.io/section: 'controlplane'
@@ -131,6 +130,7 @@ spec:
         openAPIV3Schema:
           description: "Configure how RKE2 will back  up ETCD"
           type: boolean
+          default: true
     - name: etcdBackupScheduleCron
       required: false
       metadata:
