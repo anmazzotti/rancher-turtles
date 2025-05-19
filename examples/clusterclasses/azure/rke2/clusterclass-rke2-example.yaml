@@ -130,7 +130,7 @@ spec:
         openAPIV3Schema:
           description: "Configure how RKE2 will back  up ETCD"
           type: boolean
-          default: true
+          default: false
     - name: etcdBackupScheduleCron
       required: false
       metadata:
