@@ -37,10 +37,13 @@ spec:
       required: true
       metadata: 
         annotations:
+          turtles-capi.cattle.io/group: 'credentials'
           turtles-capi.cattle.io/section: 'general'
+          turtles-capi.cattle.io/highlight: 'info'
+
       schema:
         openAPIV3Schema:
-          description: "The Azure Subscription ID where the Cluster will be created."
+          description: "The Azure Subscription ID where the Cluster will be created. The AzureClusterIdentity credentials should be under this subscription."
           type: string
     - name: location
       required: true
@@ -75,9 +78,12 @@ spec:
       metadata: 
         annotations:
           turtles-capi.cattle.io/section: 'general'
+          turtles-capi.cattle.io/group: 'credentials'
+          turtles-capi.cattle.io/highlight: 'info'
+          turtles-capi.cattle.io/type: 'infrastructure.cluster.x-k8s.io.azureclusteridentity'
       schema:
         openAPIV3Schema:
-          description: "The AzureClusterIdentity resource name referencing the credentials to create the Cluster."
+          description: "The AzureClusterIdentity is a CRD that references a secret containing credentials used to authenticate with Azure. It should be in the same namespace or have allowedNamespaces specified."
           type: string
           default: "cluster-identity"
     - name: imageGallery
@@ -131,13 +137,13 @@ spec:
         annotations: 
           turtles-capi.cattle.io/section: 'controlplane'
           turtles-capi.cattle.io/group: 'ETCD Backup'
+          turtles-capi.cattle.io/highlight: 'info'
           turtles-capi.cattle.io/label: 'Enable Automatic ETCD Backup'
-          turtles-capi.cattle.io/toggle-group: "true"
       schema:
         openAPIV3Schema:
-          description: "Configure how RKE2 will back  up ETCD"
+          description: "In RKE2, snapshots are stored on each etcd node. If you have multiple etcd or etcd + control-plane nodes, you will have multiple copies of local etcd snapshots."
           type: boolean
-          default: false
+          default: true
     - name: etcdBackupScheduleCron
       required: false
       metadata:
@@ -162,6 +168,39 @@ spec:
           description: "Number of snapshots to retain"
           type: string
           example: "5"
+    - name: toggleEtcdS3
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'controlplane'
+          turtles-capi.cattle.io/group: 'ETCD Backup'
+          turtles-capi.cattle.io/label: 'Configure S3 data store'
+      schema:
+        openAPIV3Schema:
+          description: "RKE2 supports writing etcd snapshots to and restoring etcd snapshots from systems with S3-compatible APIs. S3 support is available for both on-demand and scheduled snapshots."
+          type: boolean
+          default: false
+    - name: s3EndpointUrl
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'controlplane'
+          turtles-capi.cattle.io/group: 'ETCD Backup'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdS3'
+      schema:
+        openAPIV3Schema:
+          description: "S3 endpoint url"
+          type: string
+          required: true
+    - name: s3Region
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'controlplane'
+          turtles-capi.cattle.io/group: 'ETCD Backup'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdS3'
+      schema:
+        openAPIV3Schema:
+          description: "S3 Region"
+          type: string
+          default: 'us-east-1'
   patches:
     - name: rke2ControlPlaneTemplate
       definitions:
