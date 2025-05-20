@@ -189,7 +189,7 @@ spec:
         openAPIV3Schema:
           description: "S3 endpoint url"
           type: string
-          required: true
+          required: false
     - name: s3Region
       metadata:
         annotations: 
