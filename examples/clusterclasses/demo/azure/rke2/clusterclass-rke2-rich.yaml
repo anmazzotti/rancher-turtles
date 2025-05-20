@@ -172,6 +172,9 @@ spec:
           turtles-capi.cattle.io/section: 'controlplane'
           turtles-capi.cattle.io/group: 'ETCD Backup'
           turtles-capi.cattle.io/label: 'Configure S3 data store'
+          turtles-capi.cattle.io/highlight: 'info'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
+
       schema:
         openAPIV3Schema:
           description: "RKE2 supports writing etcd snapshots to and restoring etcd snapshots from systems with S3-compatible APIs. S3 support is available for both on-demand and scheduled snapshots."
