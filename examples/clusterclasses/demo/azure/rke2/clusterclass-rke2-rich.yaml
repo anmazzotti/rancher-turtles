@@ -145,7 +145,6 @@ spec:
           type: boolean
           default: true
     - name: etcdBackupScheduleCron
-      required: false
       metadata:
         annotations: 
           turtles-capi.cattle.io/section: 'controlplane'
@@ -157,7 +156,6 @@ spec:
           type: string
           example: "0 */12 * * *"
     - name: etcdBackupRetention
-      required: false
       metadata:
         annotations: 
           turtles-capi.cattle.io/section: 'controlplane'
@@ -189,7 +187,6 @@ spec:
         openAPIV3Schema:
           description: "S3 endpoint url"
           type: string
-          required: false
     - name: s3Region
       metadata:
         annotations: 
