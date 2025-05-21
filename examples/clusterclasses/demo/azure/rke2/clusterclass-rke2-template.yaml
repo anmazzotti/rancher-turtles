@@ -130,7 +130,7 @@ spec:
             - ""
     # rke2controlplane.serverConfig.etcd
     # create a toggle component for etcd backup configuration
-    - name: etcdBackupenableAutomaticSnapshots
+    - name: toggleEtcdBackup
       metadata:
         annotations: 
           turtles-capi.cattle.io/section: 'controlplane'
@@ -315,7 +315,7 @@ spec:
                 etcd:
                   exposeMetrics: '{{ .etcdexposeMetrics }}'
                   backupConfig:
-                    disableAutomaticSnapshots: '{{ .etcdBackupenableAutomaticSnapshots }}' 
+                    disableAutomaticSnapshots: '{{ .toggleEtcdBackup }}' 
                     snapshotName: '{{ .etcdBackupsnapshotName }}'
                     scheduleCron: '{{ .etcdBackupScheduleChron }}'
                     retention: '{{ .etcdBackupretention }}'
