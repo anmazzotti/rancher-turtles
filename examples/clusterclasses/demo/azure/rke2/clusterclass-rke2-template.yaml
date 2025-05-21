@@ -147,7 +147,7 @@ spec:
         annotations: 
           turtles-capi.cattle.io/section: 'controlplane'
           turtles-capi.cattle.io/group: 'ETCD Backup'
-          turtles-capi.cattle.io/toggled-by: 'etcdBackupenableAutomaticSnapshots'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
       schema:
         openAPIV3Schema:
           description: "Snapshot interval time in cron spec. eg. every 5 hours '* */5 * * *'"
@@ -158,7 +158,7 @@ spec:
         annotations: 
           turtles-capi.cattle.io/section: 'controlplane'
           turtles-capi.cattle.io/group: 'ETCD Backup'
-          turtles-capi.cattle.io/toggled-by: 'etcdBackupenableAutomaticSnapshots'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
       schema:
         openAPIV3Schema:
           description: "Number of snapshots to retain"
@@ -169,7 +169,7 @@ spec:
         annotations: 
           turtles-capi.cattle.io/section: 'controlplane'
           turtles-capi.cattle.io/group: 'ETCD Backup'
-          turtles-capi.cattle.io/toggled-by: 'etcdBackupenableAutomaticSnapshots'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
       schema:
         openAPIV3Schema:
           description: "Set the base name of etcd snapshots. Default: etcd-snapshot-<unix-timestamp> (default: \"etcd-snapshot\")"
@@ -180,7 +180,7 @@ spec:
         annotations: 
           turtles-capi.cattle.io/section: 'controlplane'
           turtles-capi.cattle.io/group: 'ETCD Backup'
-          turtles-capi.cattle.io/toggled-by: 'etcdBackupenableAutomaticSnapshots'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
       schema:
         openAPIV3Schema:
           description: "Directory to save db snapshots. Default location: <data-dir>/db/snapshots"
@@ -192,7 +192,7 @@ spec:
           turtles-capi.cattle.io/group: 'ETCD Backup'
           turtles-capi.cattle.io/label: 'Configure S3 data store'
           turtles-capi.cattle.io/highlight: 'info'
-          turtles-capi.cattle.io/toggled-by: 'etcdBackupenableAutomaticSnapshots'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
       schema:
         openAPIV3Schema:
           description: "RKE2 supports writing etcd snapshots to and restoring etcd snapshots from systems with S3-compatible APIs. S3 support is available for both on-demand and scheduled snapshots."
