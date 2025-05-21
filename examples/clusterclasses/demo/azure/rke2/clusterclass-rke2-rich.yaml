@@ -77,7 +77,7 @@ spec:
       metadata: 
         annotations:
           turtles-capi.cattle.io/section: 'general'
-          turtles-capi.cattle.io/highlight: 'info'
+          turtles-capi.cattle.io/highlight: 'warning'
           turtles-capi.cattle.io/type: 'infrastructure.cluster.x-k8s.io.azureclusteridentity'
       schema:
         openAPIV3Schema:
