@@ -315,7 +315,7 @@ spec:
                 etcd:
                   exposeMetrics: '{{ .etcdexposeMetrics }}'
                   backupConfig:
-                    disableAutomaticSnapshots: '{{if .etcdBackupenableAutomaticSnapshots }} false' 
+                    disableAutomaticSnapshots: '{{ .etcdBackupenableAutomaticSnapshots }}' 
                     snapshotName: '{{ .etcdBackupsnapshotName }}'
                     scheduleCron: '{{ .etcdBackupScheduleChron }}'
                     retention: '{{ .etcdBackupretention }}'
