@@ -37,7 +37,6 @@ spec:
       required: true
       metadata: 
         annotations:
-          turtles-capi.cattle.io/group: 'credentials'
           turtles-capi.cattle.io/section: 'general'
           turtles-capi.cattle.io/highlight: 'info'
 
@@ -78,7 +77,6 @@ spec:
       metadata: 
         annotations:
           turtles-capi.cattle.io/section: 'general'
-          turtles-capi.cattle.io/group: 'credentials'
           turtles-capi.cattle.io/highlight: 'info'
           turtles-capi.cattle.io/type: 'infrastructure.cluster.x-k8s.io.azureclusteridentity'
       schema:
