@@ -86,33 +86,7 @@ spec:
           description: "The AzureClusterIdentity is a CRD that references a secret containing credentials used to authenticate with Azure. It should be in the same namespace or have allowedNamespaces specified."
           type: string
           default: "cluster-identity"
-    - name: imageGallery
-      required: true
-      metadata:
-        annotations: 
-          turtles-capi.cattle.io/section: 'Custom Section'
-      schema:
-        openAPIV3Schema:
-          description: "The image Public gallery name."
-          type: string
-          default: "ClusterAPI-f72ceb4f-5159-4c26-a0fe-2ea738f0d019"
-    - name: imageName
-      required: true
-      metadata:
-        annotations: 
-          turtles-capi.cattle.io/section: 'Custom Section'
-      schema:
-        openAPIV3Schema:
-          description: "The image name"
-          type: string
-          default: "capi-ubun2-2404"          
-    - name: vmSize
-      required: true
-      schema:
-        openAPIV3Schema:
-          description: "The VM size used by machines."
-          type: string
-          default: "Standard_D2s_v3"
+
     - name: registrationMethod
       required: true
       metadata:
@@ -274,28 +248,110 @@ spec:
       schema:
         openAPIV3Schema:
           type: string
-  patches:
-    # - name: rke2ControlPlaneTemplate
-    #   definitions:
-    #     - selector:
-    #         apiVersion: controlplane.cluster.x-k8s.io/v1beta1
-    #         kind: RKE2ControlPlaneTemplate
-    #         matchResources:
-    #           controlPlane: true
-    #       jsonPatches:
-    #         - op: add
-    #           path: "/spec/template/spec/serverConfig/etcd/backupConfig/disableAutomaticSnapshots"
-    #           valueFrom:
-    #             variable: toggleEtcdBackup
-    #         - op: add
-    #           path: "/spec/template/spec/serverConfig/etcd/backupConfig/scheduleCron"
-    #           valueFrom:
-    #             variable: etcdBackupScheduleCron
-    #         - op: add
-    #           path: "/spec/template/spec/serverConfig/etcd/backupConfig/retention"
-    #           valueFrom:
-    #             variable: etcdBackupRetention
+    - name: imageGallery
+      required: true
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'Azure Machines'
+      schema:
+        openAPIV3Schema:
+          description: "The image Public gallery name."
+          type: string
+          default: "ClusterAPI-f72ceb4f-5159-4c26-a0fe-2ea738f0d019"
+    - name: imageName
+      required: true
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'Azure Machines'
+      schema:
+        openAPIV3Schema:
+          description: "The image name"
+          type: string
+          default: "capi-ubun2-2404"          
+    - name: vmSize
+      required: true
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'Azure Machines'
+      schema:
+        openAPIV3Schema:
+          description: "The VM size used by machines."
+          type: string
+          default: "Standard_D2s_v3"
+    # this doesn't map to anything in the spec, it just creates a hide-able section in the UI      
+    - name: toggleazDisk
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'Azure Machines'
+          turtles-capi.cattle.io/label: 'Configure OS Disk'
+          turtles-capi.cattle.io/highlight: 'warning'
+      schema:
+        openAPIV3Schema:
+          description: "Define the operating system disks for Azure machines. WARNING: This requires any updates to ManagedDisk to be manually converted. This is due to the odd issue with conversion-gen where the warning message generated uses a relative directory import rather than the fully qualified import when generating outside of the GOPATH."
+          type: boolean
+          default: false
+    - name: azdiskSizeGB
+      metadata:
+        annotations:
+          turtles-capi.cattle.io/section: 'Azure Machines'
+          turtles-capi.cattle.io/toggled-by: 'toggleazDisk'
+      schema:
+        openAPIV3Schema:
+          description: "Disk Size sets the size in GB of the OS disk. Default: 30GB"
+          type: string
+          example: 30GB
+    - name: azDiskstorageAccountType
+      metadata:
+        annotations:
+          turtles-capi.cattle.io/section: 'Azure Machines'
+          turtles-capi.cattle.io/toggled-by: 'toggleazDisk'
+      schema:
+        openAPIV3Schema:
+          description: "Disk Size sets the size in GB of the OS disk. Default: 30GB"
+          type: string
+          example: 30GB
+    - name: azDiskid
+      metadata:
+        annotations:
+          turtles-capi.cattle.io/section: 'Azure Machines'
+          turtles-capi.cattle.io/toggled-by: 'toggleazDisk'
+      schema:
+        openAPIV3Schema:
+          description: "Specify the customer-managed disk encryption set resource id for the managed disk"
+          type: string
+    - name: toggleSpotInstances
+      metadata:
+        annotations:
+          turtles-capi.cattle.io/section: 'Azure Machines'
+          turtles-capi.cattle.io/label: 'Configure Spot Instances'
+      schema:
+        openAPIV3Schema:
+          type: string
+    - name: azMaxPrice
+      metadata:
+        annotations:
+          turtles-capi.cattle.io/section: 'Azure Machines'
+          turtles-capi.cattle.io/toggled-by: 'toggleSpotInstances'
+          turtles-capi.cattle.io/highlight: 'info'
+      schema:
+        openAPIV3Schema:
+          description: "Specify the maximum price you're willing to pay for spot instances."
+          type: string
+    - name: azevictionPolicy
+      metadata:
+        annotations:
+          turtles-capi.cattle.io/section: 'Azure Machines'
+          turtles-capi.cattle.io/toggled-by: 'toggleSpotInstances'
+      schema:
+        openAPIV3Schema:
+          description: "Define the behavior of the virtual machine when it is evicted."
+          type: string
+          enum:
+          - Delete
+          - Deallocate
 
+  
+  patches:
     - name: rke2ControlPlaneTemplate
       definitions:
       - jsonPatches:
@@ -345,38 +401,47 @@ spec:
                         name: "{{ .builtin.controlPlane.machineTemplate.infrastructureRef.name }}-azure-json"
                     path: /etc/kubernetes/azure.json
                     permissions: "0644"
-            # - op: add
         selector:
           apiVersion: controlplane.cluster.x-k8s.io/v1beta1
           kind: RKE2ControlPlaneTemplate
           matchResources:
             controlPlane: true
 
-
-   # # TODO nb add to full spec template patch
-    # - name: azureMachineTemplate
-    #   definitions:
-    #     - selector:
-    #         apiVersion: controlplane.cluster.x-k8s.io/v1beta1
-    #         kind: RKE2ControlPlaneTemplate
-    #         matchResources:
-    #           controlPlane: true
-    #       jsonPatches:
-    #         - op: add
-    #           path: /spec/template/spec/files/-
-    #           valueFrom:
-    #             template: |
-    #                 contentFrom:
-    #                   secret:
-    #                     key: control-plane-azure.json
-    #                     name: "{{ .builtin.controlPlane.machineTemplate.infrastructureRef.name }}-azure-json"
-    #                 owner: root:root
-    #                 path: /etc/kubernetes/azure.json
-    #                 permissions: "0644"
-            # - op: add
-            #   path: /spec/template/spec/registrationMethod
-            #   valueFrom:
-            #     variable: registrationMethod
+    ## initialize azure-specific props on azure machine templates
+    ## cp and worker machines            
+    - name: azureMachineTemplate
+      definitions:
+        - selector: 
+            apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+            kind: AzureMachineTemplate
+            matchResources:
+              controlPlane: true
+              machineDeploymentClass:
+                names:
+                  - rke2-default-worker
+        - jsonPatches:
+          - op: add
+            path: /spec/template/spec
+            valueFrom:
+              template: |
+                vmSize: '{{ .vmSize }}'
+                image:
+                  computeGallery: 
+                    gallery: '{{ .imageGallery }}'
+                    name: '{{ .imageName }}'
+                    version: '{{ trimPrefix "v" (trimSuffix "+rke2r1" .builtin.cluster.topology.version) }}'
+                osDisk:
+                  diskSizeGB: ' {{ .azdiskSizeGB }} '
+                  osType: '{{ .azosType }}'
+                  managedDisk: 
+                    storageAccountType: '{{ .azDiskstorageAccountType }}'
+                    diskEncryptionSetParameters:
+                      id: '{{ .azDiskid }}'
+                  cachingType:'{{ .azcachingType }}'
+                sshPublicKey: '{{ .azsshPublicKey }}'
+                spotVMOptions:
+                  maxPrice: '{{ .azMaxPrice }}'
+                  evictionPolicy: '{{ .azevictionPolicy  }}'
 
 
     - name: azureClusterTemplate
@@ -408,32 +473,7 @@ spec:
               valueFrom:
                 variable: builtin.cluster.name
 
-        - selector:
-            apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
-            kind: AzureMachineTemplate
-            matchResources:
-              controlPlane: true
-              machineDeploymentClass:
-                names:
-                  - rke2-default-worker
-          jsonPatches:
-            - op: add
-              path: "/spec/template/spec/image/computeGallery/gallery"
-              valueFrom:
-                variable: imageGallery
-            - op: add
-              path: "/spec/template/spec/image/computeGallery/name"
-              valueFrom:
-                variable: imageName
-            - op: replace
-              path: /spec/template/spec/image/computeGallery/version
-              valueFrom:
-                template: '{{ trimPrefix "v" (trimSuffix "+rke2r1" .builtin.cluster.topology.version) }}'
-            - op: add
-              path: "/spec/template/spec/vmSize"
-              valueFrom:
-                variable: vmSize
----
+# ---
 apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
 kind: RKE2ConfigTemplate
 metadata:
