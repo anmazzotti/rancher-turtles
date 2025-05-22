@@ -410,14 +410,6 @@ spec:
     ## cp and worker machines            
     - name: azureMachineTemplate
       definitions:
-        - selector: 
-            apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
-            kind: AzureMachineTemplate
-            matchResources:
-              controlPlane: true
-              machineDeploymentClass:
-                names:
-                  - rke2-default-worker
         - jsonPatches:
           - op: add
             path: /spec/template/spec
@@ -441,6 +433,14 @@ spec:
                 spotVMOptions:
                   maxPrice: '{{ .azMaxPrice }}'
                   evictionPolicy: '{{ .azevictionPolicy  }}'
+          selector: 
+            apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+            kind: AzureMachineTemplate
+            matchResources:
+              controlPlane: true
+              machineDeploymentClass:
+                names:
+                  - rke2-default-worker
     - name: azureClusterTemplate
       definitions:
         - selector:
