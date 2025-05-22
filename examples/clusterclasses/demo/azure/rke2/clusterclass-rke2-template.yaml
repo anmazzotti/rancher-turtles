@@ -326,16 +326,17 @@ spec:
           turtles-capi.cattle.io/label: 'Configure Spot Instances'
       schema:
         openAPIV3Schema:
-          type: string
+          description: "Spot instances can offer significant price savings. Machines will be automatically evicted if their cost exceeds the price set below, or if Azure needs the capacity for other, pay-as-you-go workloads. Azure VMs that are deallocated for pricing reasons will not be automatically restarted if the price drops below the maximum."
+          type: boolean
     - name: azMaxPrice
       metadata:
         annotations:
           turtles-capi.cattle.io/section: 'Azure Machines'
           turtles-capi.cattle.io/toggled-by: 'toggleSpotInstances'
-          turtles-capi.cattle.io/highlight: 'info'
+          turtles-capi.cattle.io/highlight: 'warning'
       schema:
         openAPIV3Schema:
-          description: "Specify the maximum price you're willing to pay for spot instances."
+          description: "You will need to scale down any affected machines to change this value. If this is set to -1 VMs wont be evicted for pricing reasons."
           type: string
     - name: azevictionPolicy
       metadata:
