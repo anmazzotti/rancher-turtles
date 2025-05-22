@@ -284,10 +284,8 @@ spec:
         annotations: 
           turtles-capi.cattle.io/section: 'Azure Machines'
           turtles-capi.cattle.io/label: 'Configure OS Disk'
-          turtles-capi.cattle.io/highlight: 'warning'
       schema:
         openAPIV3Schema:
-          description: "Define the operating system disks for Azure machines. WARNING: This requires any updates to ManagedDisk to be manually converted. This is due to the odd issue with conversion-gen where the warning message generated uses a relative directory import rather than the fully qualified import when generating outside of the GOPATH."
           type: boolean
           default: false
     - name: azdiskSizeGB
@@ -305,11 +303,11 @@ spec:
         annotations:
           turtles-capi.cattle.io/section: 'Azure Machines'
           turtles-capi.cattle.io/toggled-by: 'toggleazDisk'
+          turtles-capi.cattle.io/highlight: 'warning'
       schema:
         openAPIV3Schema:
-          description: "Disk Size sets the size in GB of the OS disk. Default: 30GB"
+          description: "Define the operating system disks for Azure machines. WARNING: This requires any updates to ManagedDisk to be manually converted. This is due to the odd issue with conversion-gen where the warning message generated uses a relative directory import rather than the fully qualified import when generating outside of the GOPATH."
           type: string
-          example: 30GB
     - name: azDiskid
       metadata:
         annotations:
@@ -324,6 +322,7 @@ spec:
         annotations:
           turtles-capi.cattle.io/section: 'Azure Machines'
           turtles-capi.cattle.io/label: 'Configure Spot Instances'
+          turtles-capi.cattle.io/highlight: 'info'
       schema:
         openAPIV3Schema:
           description: "Spot instances can offer significant price savings. Machines will be automatically evicted if their cost exceeds the price set below, or if Azure needs the capacity for other, pay-as-you-go workloads. Azure VMs that are deallocated for pricing reasons will not be automatically restarted if the price drops below the maximum."
