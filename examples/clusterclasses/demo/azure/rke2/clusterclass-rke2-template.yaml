@@ -21,6 +21,8 @@ spec:
   workers:
     machineDeployments:
       - class: rke2-default-worker
+        namingStrategy:
+          template: "{{ .cluster.name }}-{{ .machineDeployment.topologyName }}-{{ .random }}"
         template:
           bootstrap:
             ref:
