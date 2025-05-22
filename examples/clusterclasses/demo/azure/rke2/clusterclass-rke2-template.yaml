@@ -303,10 +303,8 @@ spec:
         annotations:
           turtles-capi.cattle.io/section: 'Azure Machines'
           turtles-capi.cattle.io/toggled-by: 'toggleazDisk'
-          turtles-capi.cattle.io/highlight: 'warning'
       schema:
         openAPIV3Schema:
-          description: "Define the operating system disks for Azure machines. WARNING: This requires any updates to ManagedDisk to be manually converted. This is due to the odd issue with conversion-gen where the warning message generated uses a relative directory import rather than the fully qualified import when generating outside of the GOPATH."
           type: string
     - name: azDiskid
       metadata:
