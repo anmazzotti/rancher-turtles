@@ -197,7 +197,6 @@ spec:
         openAPIV3Schema:
           description: "You will need to scale down any affected machines to change this value. If this is set to -1 VMs wont be evicted for pricing reasons."
           type: string
-    - name: azevictionPolicy
     
     
     # rke2 
