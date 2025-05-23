@@ -399,10 +399,10 @@ spec:
           type: string
           properties:
             enum:
-            - cis
-            - cis-1.23
-            - cis-1.5
-            - cis-1.6
+              - cis
+              - cis-1.23
+              - cis-1.5
+              - cis-1.6
     - name: rkeBootairGapped
       metadata:
         annotations: 
