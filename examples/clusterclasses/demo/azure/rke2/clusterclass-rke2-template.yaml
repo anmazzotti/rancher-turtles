@@ -356,182 +356,182 @@ spec:
           enum:
           - Delete
           - Deallocate
-    # ## rke2 bootstrap
-    # ### agent config
-    # - name: rkeBootnodeAnnotations
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
-    #       turtles-capi.cattle.io/highlight: 'info'
-    #   schema:
-    #     openAPIV3Schema:
-    #       description: 'NodeAnnotations  are annotations that are created on nodes post bootstrap phase. Unfortunately it is not possible to apply annotations via kubelet using current bootstrap configurations. Issue\: https://github.com/kubernetes/kubernetes/issues/108046'
-    #       type: object
-    #       additionalProperties:
-    #         type: string
-    # - name: rkeBootnodeLabels
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
-    #   schema:
-    #     openAPIV3Schema:
-    #       type: array
-    #       items:
-    #         type: string
-    # - name: rkeBootnodeTaints
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
-    #   schema:
-    #     openAPIV3Schema:
-    #       type: array
-    #       items:
-    #         type: string
-    # - name: rkeBootcisProfile
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
-    #       turtles-capi.cattle.io/highlight: 'info'
-    #   schema:
-    #     openAPIV3Schema:
-    #       description: 'Using the generic cis profile will ensure that the cluster passes the CIS benchmark (rke2-cis-1.XX-profile-hardened) associated with the Kubernetes version that RKE2 is running. For example, RKE2 v1.26.XX with the profile: cis will pass the rke2-cis-1.8-profile-hardened in Rancher.'
-    #       type: string
-    #       enum:
-    #       - cis
-    #       - cis-1.23
-    #       - cis-1.5
-    #       - cis-1.6
-    # - name: rkeBootairGapped
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
-    #       turtles-capi.cattle.io/highlight: 'info'
-    #   schema:
-    #     description: 'AirGapped is a boolean value to define if the bootstrapping should be air-gapped, basically supposing that online container registries and RKE2 install scripts are not reachable.'
-    #     openAPIV3Schema:
-    #       type: boolean
-    # - name: rkeBootairGappedChecksum
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
-    #       turtles-capi.cattle.io/highlight: 'info'
-    #   schema:
-    #     description: 'AirGappedChecksum is a string value with a sha256sum checksum to compare with checksum of existing sha256sum-<arch>.txt file for packages already available on the machine before performing air-gapped installation.'
-    #     openAPIV3Schema:
-    #       type: boolean
+    ## rke2 bootstrap
+    ### agent config
+    - name: rkeBootnodeAnnotations
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
+          turtles-capi.cattle.io/highlight: 'info'
+      schema:
+        openAPIV3Schema:
+          description: 'NodeAnnotations  are annotations that are created on nodes post bootstrap phase. Unfortunately it is not possible to apply annotations via kubelet using current bootstrap configurations. Issue\: https://github.com/kubernetes/kubernetes/issues/108046'
+          type: object
+          additionalProperties:
+            type: string
+    - name: rkeBootnodeLabels
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
+      schema:
+        openAPIV3Schema:
+          type: array
+          items:
+            type: string
+    - name: rkeBootnodeTaints
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
+      schema:
+        openAPIV3Schema:
+          type: array
+          items:
+            type: string
+    - name: rkeBootcisProfile
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
+          turtles-capi.cattle.io/highlight: 'info'
+      schema:
+        openAPIV3Schema:
+          description: 'Using the generic cis profile will ensure that the cluster passes the CIS benchmark (rke2-cis-1.XX-profile-hardened) associated with the Kubernetes version that RKE2 is running. For example, RKE2 v1.26.XX with the profile: cis will pass the rke2-cis-1.8-profile-hardened in Rancher.'
+          type: string
+          enum:
+          - cis
+          - cis-1.23
+          - cis-1.5
+          - cis-1.6
+    - name: rkeBootairGapped
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
+          turtles-capi.cattle.io/highlight: 'info'
+      schema:
+        description: 'AirGapped is a boolean value to define if the bootstrapping should be air-gapped, basically supposing that online container registries and RKE2 install scripts are not reachable.'
+        openAPIV3Schema:
+          type: boolean
+    - name: rkeBootairGappedChecksum
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
+          turtles-capi.cattle.io/highlight: 'info'
+      schema:
+        description: 'AirGappedChecksum is a string value with a sha256sum checksum to compare with checksum of existing sha256sum-<arch>.txt file for packages already available on the machine before performing air-gapped installation.'
+        openAPIV3Schema:
+          type: boolean
 
   patches:
-    # - name: rke2ControlPlaneTemplate
-    #   definitions:
-    #   - jsonPatches:
-    #     - op: add
-    #       path: /spec/template/spec
-    #       valueFrom:
-    #         template: |
-    #           rolloutStrategy:
-    #             type: "RollingUpdate"
-    #             rollingUpdate:
-    #               maxSurge: 1
-    #           agentConfig: {}
-    #           serverConfig:
-    #             cni: none
-    #             cloudProviderName: external
-    #             disableComponents:
-    #               kubernetesComponents:
-    #               - cloudController
-    #             etcd:
-    #               exposeMetrics: '{{ .etcdexposeMetrics }}'
-    #               backupConfig:
-    #                 disableAutomaticSnapshots: '{{ .toggleEtcdBackup }}' 
-    #                 snapshotName: '{{ .etcdBackupsnapshotName }}'
-    #                 scheduleCron: '{{ .etcdBackupScheduleChron }}'
-    #                 retention: '{{ .etcdBackupretention }}'
-    #                 directory: '{{ .etcdBackupdirectory }}'
-    #                 s3:
-    #                   endpoint:'{{ .etcdS3endpoint }}'
-    #                   endpointCASecret:'{{ .etcdS3endpointendpointCASecret }}'
-    #                   enforceSslVerify:'{{ .etcdS3enforceSslVerify }}'
-    #                   s3CredentialSecret:'{{ .etcdS3s3CredentialSecret }}'
-    #                   bucket:'{{ .etcdS3bucket }}'
-    #                   region:'{{ .etcdS3region }}'
-    #                   folder:'{{ .etcdS3folder }}'
-    #             kubeAPIServer:
-    #               extraArgs:
-    #               - --anonymous-auth=true
-    #           registrationMethod: '{{ .registrationMethod }}'
-    #           files:
-    #             - owner: root:root
-    #               path: /etc/kubernetes/azure.json
-    #               permissions: "0644"
-    #             - owner: root:root
-    #               contentFrom:
-    #                   secret:
-    #                     key: control-plane-azure.json
-    #                     name: "{{ .builtin.controlPlane.machineTemplate.infrastructureRef.name }}-azure-json"
-    #                 path: /etc/kubernetes/azure.json
-    #                 permissions: "0644"
-    #     selector:
-    #       apiVersion: controlplane.cluster.x-k8s.io/v1beta1
-    #       kind: RKE2ControlPlaneTemplate
-    #       matchResources:
-    #         controlPlane: true
-    ## initialize azure-specific props on azure machine templates
-    ## cp and worker machines            
-    # - name: azureMachineTemplate
-    #   definitions:
-    #     - jsonPatches:
-    #       - op: add
-    #         path: /spec/template/spec
-    #         valueFrom:
-    #           template: |
-    #             vmSize: '{{ .vmSize }}'
-    #             image:
-    #               computeGallery: 
-    #                 gallery: '{{ .imageGallery }}'
-    #                 name: '{{ .imageName }}'
-    #                 version: '{{ trimPrefix "v" (trimSuffix "+rke2r1" .builtin.cluster.topology.version) }}'
-    #             osDisk:
-    #               diskSizeGB: ' {{ .azdiskSizeGB }} '
-    #               osType: '{{ .azosType }}'
-    #               managedDisk: 
-    #                 storageAccountType: '{{ .azDiskstorageAccountType }}'
-    #                 diskEncryptionSetParameters:
-    #                   id: '{{ .azDiskid }}'
-    #               cachingType:'{{ .azcachingType }}'
-    #             sshPublicKey: '{{ .azsshPublicKey }}'
-    #             spotVMOptions:
-    #               maxPrice: '{{ .azMaxPrice }}'
-    #               evictionPolicy: '{{ .azevictionPolicy  }}'
-    #       selector: 
-    #         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
-    #         kind: AzureMachineTemplate
-    #         matchResources:
-    #           controlPlane: true
-    #           machineDeploymentClass:
-    #             names:
-    #               - rke2-default-worker
-    # - name: rke2BootstrapTemplate
-    #   definitions:
-    #     - jsonPatches:
-    #       - op: add
-    #         path: /spec/template/spec
-    #         valueFrom:
-    #           template: |
-    #             agentConfig:
-    #               nodeLabels: '{{ .rkeBootnodeLabels }}' 
-    #               nodeAnnotations: '{{ .rkeBootnodeAnnotations }}' 
-    #               nodeTaints: '{{ .rkeBootnodeTaints }}'
-    #               cisProfile: '{{ .rkeBootcisProfile }}'
-    #               airGapped: '{{ .rkeBootairGapped }}'
-    #               airGappedChecksum: '{{ .rkeBootairGappedChecksum }}'
+    - name: rke2ControlPlaneTemplate
+      definitions:
+      - jsonPatches:
+        - op: add
+          path: /spec/template/spec
+          valueFrom:
+            template: |
+              rolloutStrategy:
+                type: "RollingUpdate"
+                rollingUpdate:
+                  maxSurge: 1
+              agentConfig: {}
+              serverConfig:
+                cni: none
+                cloudProviderName: external
+                disableComponents:
+                  kubernetesComponents:
+                  - cloudController
+                etcd:
+                  exposeMetrics: '{{ .etcdexposeMetrics }}'
+                  backupConfig:
+                    disableAutomaticSnapshots: '{{ .toggleEtcdBackup }}' 
+                    snapshotName: '{{ .etcdBackupsnapshotName }}'
+                    scheduleCron: '{{ .etcdBackupScheduleChron }}'
+                    retention: '{{ .etcdBackupretention }}'
+                    directory: '{{ .etcdBackupdirectory }}'
+                    s3:
+                      endpoint:'{{ .etcdS3endpoint }}'
+                      endpointCASecret:'{{ .etcdS3endpointendpointCASecret }}'
+                      enforceSslVerify:'{{ .etcdS3enforceSslVerify }}'
+                      s3CredentialSecret:'{{ .etcdS3s3CredentialSecret }}'
+                      bucket:'{{ .etcdS3bucket }}'
+                      region:'{{ .etcdS3region }}'
+                      folder:'{{ .etcdS3folder }}'
+                kubeAPIServer:
+                  extraArgs:
+                  - --anonymous-auth=true
+              registrationMethod: '{{ .registrationMethod }}'
+              files:
+                - owner: root:root
+                  path: /etc/kubernetes/azure.json
+                  permissions: "0644"
+                - owner: root:root
+                  contentFrom:
+                      secret:
+                        key: control-plane-azure.json
+                        name: "{{ .builtin.controlPlane.machineTemplate.infrastructureRef.name }}-azure-json"
+                    path: /etc/kubernetes/azure.json
+                    permissions: "0644"
+        selector:
+          apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+          kind: RKE2ControlPlaneTemplate
+          matchResources:
+            controlPlane: true
+    # initialize azure-specific props on azure machine templates
+    # cp and worker machines            
+    - name: azureMachineTemplate
+      definitions:
+        - jsonPatches:
+          - op: add
+            path: /spec/template/spec
+            valueFrom:
+              template: |
+                vmSize: '{{ .vmSize }}'
+                image:
+                  computeGallery: 
+                    gallery: '{{ .imageGallery }}'
+                    name: '{{ .imageName }}'
+                    version: '{{ trimPrefix "v" (trimSuffix "+rke2r1" .builtin.cluster.topology.version) }}'
+                osDisk:
+                  diskSizeGB: ' {{ .azdiskSizeGB }} '
+                  osType: '{{ .azosType }}'
+                  managedDisk: 
+                    storageAccountType: '{{ .azDiskstorageAccountType }}'
+                    diskEncryptionSetParameters:
+                      id: '{{ .azDiskid }}'
+                  cachingType:'{{ .azcachingType }}'
+                sshPublicKey: '{{ .azsshPublicKey }}'
+                spotVMOptions:
+                  maxPrice: '{{ .azMaxPrice }}'
+                  evictionPolicy: '{{ .azevictionPolicy  }}'
+          selector: 
+            apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+            kind: AzureMachineTemplate
+            matchResources:
+              controlPlane: true
+              machineDeploymentClass:
+                names:
+                  - rke2-default-worker
+    - name: rke2BootstrapTemplate
+      definitions:
+        - jsonPatches:
+          - op: add
+            path: /spec/template/spec
+            valueFrom:
+              template: |
+                agentConfig:
+                  nodeLabels: '{{ .rkeBootnodeLabels }}' 
+                  nodeAnnotations: '{{ .rkeBootnodeAnnotations }}' 
+                  nodeTaints: '{{ .rkeBootnodeTaints }}'
+                  cisProfile: '{{ .rkeBootcisProfile }}'
+                  airGapped: '{{ .rkeBootairGapped }}'
+                  airGappedChecksum: '{{ .rkeBootairGappedChecksum }}'
 
-    #       selector: 
-    #         apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
-    #         kind: RKE2ConfigTemplate
-    #         matchResources:
-    #           machineDeploymentClass:
-    #             names:
-    #               - rke2-default-worker
+          selector: 
+            apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+            kind: RKE2ConfigTemplate
+            matchResources:
+              machineDeploymentClass:
+                names:
+                  - rke2-default-worker
     - name: azureClusterTemplate
       definitions:
         - selector:
