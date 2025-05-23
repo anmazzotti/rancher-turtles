@@ -407,8 +407,8 @@ spec:
           turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
           turtles-capi.cattle.io/highlight: 'info'
       schema:
-        description: 'AirGapped is a boolean value to define if the bootstrapping should be air-gapped, basically supposing that online container registries and RKE2 install scripts are not reachable.'
         openAPIV3Schema:
+          description: 'AirGapped is a boolean value to define if the bootstrapping should be air-gapped, basically supposing that online container registries and RKE2 install scripts are not reachable.'
           type: boolean
     - name: rkeBootairGappedChecksum
       metadata:
@@ -417,9 +417,9 @@ spec:
           turtles-capi.cattle.io/highlight: 'info'
           turtles-capi.cattle.io/toggled-by: 'rkeBootairGapped'
       schema:
-        description: 'AirGappedChecksum is a string value with a sha256sum checksum to compare with checksum of existing sha256sum-<arch>.txt file for packages already available on the machine before performing air-gapped installation.'
         openAPIV3Schema:
-          type: boolean
+          description: 'AirGappedChecksum is a string value with a sha256sum checksum to compare with checksum of existing sha256sum-<arch>.txt file for packages already available on the machine before performing air-gapped installation.'
+          type: string
 
   patches:
     - name: rke2ControlPlaneTemplate
