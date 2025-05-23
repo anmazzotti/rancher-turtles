@@ -397,12 +397,11 @@ spec:
         openAPIV3Schema:
           description: 'Using the generic cis profile will ensure that the cluster passes the CIS benchmark (rke2-cis-1.XX-profile-hardened) associated with the Kubernetes version that RKE2 is running. For example, RKE2 v1.26.XX with the profile: cis will pass the rke2-cis-1.8-profile-hardened in Rancher.'
           type: string
-          properties:
-            enum:
-              - cis
-              - cis-1.23
-              - cis-1.5
-              - cis-1.6
+          enum:
+          - cis
+          - cis-1.23
+          - cis-1.5
+          - cis-1.6
     - name: rkeBootairGapped
       metadata:
         annotations: 
