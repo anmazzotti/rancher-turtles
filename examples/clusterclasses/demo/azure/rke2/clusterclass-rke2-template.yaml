@@ -387,20 +387,20 @@ spec:
           type: array
           items:
             type: string
-    - name: rkeBootcisProfile
-      metadata:
-        annotations: 
-          turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
-          turtles-capi.cattle.io/highlight: 'info'
-      schema:
-        openAPIV3Schema:
-          description: 'Using the generic cis profile will ensure that the cluster passes the CIS benchmark (rke2-cis-1.XX-profile-hardened) associated with the Kubernetes version that RKE2 is running. For example, RKE2 v1.26.XX with the profile: cis will pass the rke2-cis-1.8-profile-hardened in Rancher.'
-          type: string
-          enum:
-            - 'cis'
-            - 'cis-1.23'
-            - 'cis-1.5'
-            - 'cis-1.6'
+    # - name: rkeBootcisProfile
+    #   metadata:
+    #     annotations: 
+    #       turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
+    #       turtles-capi.cattle.io/highlight: 'info'
+    #   schema:
+    #     openAPIV3Schema:
+    #       description: 'Using the generic cis profile will ensure that the cluster passes the CIS benchmark (rke2-cis-1.XX-profile-hardened) associated with the Kubernetes version that RKE2 is running. For example, RKE2 v1.26.XX with the profile: cis will pass the rke2-cis-1.8-profile-hardened in Rancher.'
+    #       type: string
+    #       enum:
+    #         - 'cis'
+    #         - 'cis-1.23'
+    #         - 'cis-1.5'
+    #         - 'cis-1.6'
     - name: rkeBootairGapped
       metadata:
         annotations: 
