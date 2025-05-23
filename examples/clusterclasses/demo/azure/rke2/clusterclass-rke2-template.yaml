@@ -199,226 +199,226 @@ spec:
           type: string
     
     
-    # # rke2 
-    # ## rke2 control plane 
-    # ### rke2controlplane.serverConfig.etcd
-    # - name: toggleEtcdBackup
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'controlplane'
-    #       turtles-capi.cattle.io/group: 'ETCD Backup'
-    #       turtles-capi.cattle.io/highlight: 'info'
-    #       turtles-capi.cattle.io/label: 'Enable Automatic ETCD Backup'
-    #   schema:
-    #     openAPIV3Schema:
-    #       description: "In RKE2, snapshots are stored on each etcd node. If you have multiple etcd or etcd + control-plane nodes, you will have multiple copies of local etcd snapshots."
-    #       type: boolean
-    #       default: true
-    # - name: etcdBackupscheduleChron
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'controlplane'
-    #       turtles-capi.cattle.io/group: 'ETCD Backup'
-    #       turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
-    #   schema:
-    #     openAPIV3Schema:
-    #       description: "Snapshot interval time in cron spec. eg. every 5 hours '* */5 * * *'"
-    #       type: string
-    #       example: "0 */12 * * *"
-    # - name: etcdBackupretention
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'controlplane'
-    #       turtles-capi.cattle.io/group: 'ETCD Backup'
-    #       turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
-    #   schema:
-    #     openAPIV3Schema:
-    #       description: "Number of snapshots to retain"
-    #       type: string
-    #       example: "5"
-    # - name: etcdBackupsnapshotName
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'controlplane'
-    #       turtles-capi.cattle.io/group: 'ETCD Backup'
-    #       turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
-    #   schema:
-    #     openAPIV3Schema:
-    #       description: "Set the base name of etcd snapshots. Default: etcd-snapshot-<unix-timestamp> (default: \"etcd-snapshot\")"
-    #       type: string
-    #       example: "etcd-snapshot"
-    # - name: etcdBackupdirectory
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'controlplane'
-    #       turtles-capi.cattle.io/group: 'ETCD Backup'
-    #       turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
-    #   schema:
-    #     openAPIV3Schema:
-    #       description: "Directory to save db snapshots. Default location: <data-dir>/db/snapshots"
-    #       type: string
-    # - name: toggleEtcdS3
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'controlplane'
-    #       turtles-capi.cattle.io/group: 'ETCD Backup'
-    #       turtles-capi.cattle.io/label: 'Configure S3 data store'
-    #       turtles-capi.cattle.io/highlight: 'info'
-    #       turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
-    #   schema:
-    #     openAPIV3Schema:
-    #       description: "RKE2 supports writing etcd snapshots to and restoring etcd snapshots from systems with S3-compatible APIs. S3 support is available for both on-demand and scheduled snapshots."
-    #       type: boolean
-    #       default: false
-    # - name: ectdS3endpoint
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'controlplane'
-    #       turtles-capi.cattle.io/group: 'ETCD Backup'
-    #       turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup,toggleEtcdS3'
-    #   schema:
-    #     openAPIV3Schema:
-    #       description: "S3 endpoint url"
-    #       type: string
-    #       example: "s3.amazonaws.com"
-    # - name: etcdS3enforceSslVerify
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'controlplane'
-    #       turtles-capi.cattle.io/group: 'ETCD Backup'
-    #       turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup,toggleEtcdS3'
-    #   schema:
-    #     openAPIV3Schema:
-    #       description: "Enforce SSL validation "
-    #       type: boolean
-    #       default: true
-    # - name: etcdS3endpointCASecret
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'controlplane'
-    #       turtles-capi.cattle.io/group: 'ETCD Backup'
-    #       turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup,toggleEtcdS3'
-    #       turtles-capi.cattle.io/type: 'secret'
-    #   schema:
-    #     openAPIV3Schema:
-    #       description: "EndpointCA references the Secret that contains a custom CA that should be trusted to connect to S3 endpoint. The secret must contain a key named \"ca.pem\" that contains the CA certificate."
-    #       type: string
-    # - name: etcdS3s3CredentialSecret
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'controlplane'
-    #       turtles-capi.cattle.io/group: 'ETCD Backup'
-    #       turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup,toggleEtcdS3'
-    #       turtles-capi.cattle.io/type: 'secret'
-    #   schema:
-    #     openAPIV3Schema:
-    #       description: "S3CredentialSecret is a reference to a Secret containing the Access Key and Secret Key necessary to access the target S3 Bucket. The Secret must contain the following keys: \"aws_access_key_id\" and \"aws_secret_access_key\". If empty, the controller will default to IAM authentication"
-    #       type: string
-    # - name: etcdS3region
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'controlplane'
-    #       turtles-capi.cattle.io/group: 'ETCD Backup'
-    #       turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup,toggleEtcdS3'
-    #   schema:
-    #     openAPIV3Schema:
-    #       description: "S3 Region"
-    #       type: string
-    #       example: 'us-east-1'
-    # - name: etcdS3bucket
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'controlplane'
-    #       turtles-capi.cattle.io/group: 'ETCD Backup'
-    #       turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup,toggleEtcdS3'
-    #   schema:
-    #     openAPIV3Schema:
-    #       type: string
-    # - name: etcdS3folder
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'controlplane'
-    #       turtles-capi.cattle.io/group: 'ETCD Backup'
-    #       turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup,toggleEtcdS3'
-    #   schema:
-    #     openAPIV3Schema:
-    #       type: string
+    # rke2 
+    ## rke2 control plane 
+    ### rke2controlplane.serverConfig.etcd
+    - name: toggleEtcdBackup
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'controlplane'
+          turtles-capi.cattle.io/group: 'ETCD Backup'
+          turtles-capi.cattle.io/highlight: 'info'
+          turtles-capi.cattle.io/label: 'Enable Automatic ETCD Backup'
+      schema:
+        openAPIV3Schema:
+          description: "In RKE2, snapshots are stored on each etcd node. If you have multiple etcd or etcd + control-plane nodes, you will have multiple copies of local etcd snapshots."
+          type: boolean
+          default: true
+    - name: etcdBackupscheduleChron
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'controlplane'
+          turtles-capi.cattle.io/group: 'ETCD Backup'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
+      schema:
+        openAPIV3Schema:
+          description: "Snapshot interval time in cron spec. eg. every 5 hours '* */5 * * *'"
+          type: string
+          example: "0 */12 * * *"
+    - name: etcdBackupretention
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'controlplane'
+          turtles-capi.cattle.io/group: 'ETCD Backup'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
+      schema:
+        openAPIV3Schema:
+          description: "Number of snapshots to retain"
+          type: string
+          example: "5"
+    - name: etcdBackupsnapshotName
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'controlplane'
+          turtles-capi.cattle.io/group: 'ETCD Backup'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
+      schema:
+        openAPIV3Schema:
+          description: "Set the base name of etcd snapshots. Default: etcd-snapshot-<unix-timestamp> (default: \"etcd-snapshot\")"
+          type: string
+          example: "etcd-snapshot"
+    - name: etcdBackupdirectory
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'controlplane'
+          turtles-capi.cattle.io/group: 'ETCD Backup'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
+      schema:
+        openAPIV3Schema:
+          description: "Directory to save db snapshots. Default location: <data-dir>/db/snapshots"
+          type: string
+    - name: toggleEtcdS3
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'controlplane'
+          turtles-capi.cattle.io/group: 'ETCD Backup'
+          turtles-capi.cattle.io/label: 'Configure S3 data store'
+          turtles-capi.cattle.io/highlight: 'info'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup'
+      schema:
+        openAPIV3Schema:
+          description: "RKE2 supports writing etcd snapshots to and restoring etcd snapshots from systems with S3-compatible APIs. S3 support is available for both on-demand and scheduled snapshots."
+          type: boolean
+          default: false
+    - name: ectdS3endpoint
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'controlplane'
+          turtles-capi.cattle.io/group: 'ETCD Backup'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup,toggleEtcdS3'
+      schema:
+        openAPIV3Schema:
+          description: "S3 endpoint url"
+          type: string
+          example: "s3.amazonaws.com"
+    - name: etcdS3enforceSslVerify
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'controlplane'
+          turtles-capi.cattle.io/group: 'ETCD Backup'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup,toggleEtcdS3'
+      schema:
+        openAPIV3Schema:
+          description: "Enforce SSL validation "
+          type: boolean
+          default: true
+    - name: etcdS3endpointCASecret
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'controlplane'
+          turtles-capi.cattle.io/group: 'ETCD Backup'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup,toggleEtcdS3'
+          turtles-capi.cattle.io/type: 'secret'
+      schema:
+        openAPIV3Schema:
+          description: "EndpointCA references the Secret that contains a custom CA that should be trusted to connect to S3 endpoint. The secret must contain a key named \"ca.pem\" that contains the CA certificate."
+          type: string
+    - name: etcdS3s3CredentialSecret
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'controlplane'
+          turtles-capi.cattle.io/group: 'ETCD Backup'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup,toggleEtcdS3'
+          turtles-capi.cattle.io/type: 'secret'
+      schema:
+        openAPIV3Schema:
+          description: "S3CredentialSecret is a reference to a Secret containing the Access Key and Secret Key necessary to access the target S3 Bucket. The Secret must contain the following keys: \"aws_access_key_id\" and \"aws_secret_access_key\". If empty, the controller will default to IAM authentication"
+          type: string
+    - name: etcdS3region
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'controlplane'
+          turtles-capi.cattle.io/group: 'ETCD Backup'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup,toggleEtcdS3'
+      schema:
+        openAPIV3Schema:
+          description: "S3 Region"
+          type: string
+          example: 'us-east-1'
+    - name: etcdS3bucket
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'controlplane'
+          turtles-capi.cattle.io/group: 'ETCD Backup'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup,toggleEtcdS3'
+      schema:
+        openAPIV3Schema:
+          type: string
+    - name: etcdS3folder
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'controlplane'
+          turtles-capi.cattle.io/group: 'ETCD Backup'
+          turtles-capi.cattle.io/toggled-by: 'toggleEtcdBackup,toggleEtcdS3'
+      schema:
+        openAPIV3Schema:
+          type: string
     
 
-    #   metadata:
-    #     annotations:
-    #       turtles-capi.cattle.io/section: 'Azure Machines'
-    #       turtles-capi.cattle.io/toggled-by: 'toggleSpotInstances'
-    #   schema:
-    #     openAPIV3Schema:
-    #       description: "Define the behavior of the virtual machine when it is evicted."
-    #       type: string
-    #       enum:
-    #       - Delete
-    #       - Deallocate
-    # ## rke2 bootstrap
-    # ### agent config
-    # - name: rkeBootnodeAnnotations
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
-    #       turtles-capi.cattle.io/highlight: 'info'
-    #   schema:
-    #     openAPIV3Schema:
-    #       description: 'NodeAnnotations  are annotations that are created on nodes post bootstrap phase. Unfortunately it is not possible to apply annotations via kubelet using current bootstrap configurations. Issue\: https://github.com/kubernetes/kubernetes/issues/108046'
-    #       type: object
-    #       additionalProperties:
-    #         type: string
-    # - name: rkeBootnodeLabels
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
-    #   schema:
-    #     openAPIV3Schema:
-    #       type: array
-    #       items:
-    #         type: string
-    # - name: rkeBootnodeTaints
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
-    #   schema:
-    #     openAPIV3Schema:
-    #       type: array
-    #       items:
-    #         type: string
-    # - name: rkeBootcisProfile
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
-    #       turtles-capi.cattle.io/highlight: 'info'
-    #   schema:
-    #     openAPIV3Schema:
-    #       description: 'Using the generic cis profile will ensure that the cluster passes the CIS benchmark (rke2-cis-1.XX-profile-hardened) associated with the Kubernetes version that RKE2 is running. For example, RKE2 v1.26.XX with the profile: cis will pass the rke2-cis-1.8-profile-hardened in Rancher.'
-    #       type: string
-    #       enum:
-    #       - cis
-    #       - cis-1.23
-    #       - cis-1.5
-    #       - cis-1.6
-    # - name: rkeBootairGapped
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
-    #       turtles-capi.cattle.io/highlight: 'info'
-    #   schema:
-    #     description: 'AirGapped is a boolean value to define if the bootstrapping should be air-gapped, basically supposing that online container registries and RKE2 install scripts are not reachable.'
-    #     openAPIV3Schema:
-    #       type: boolean
-    # - name: rkeBootairGappedChecksum
-    #   metadata:
-    #     annotations: 
-    #       turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
-    #       turtles-capi.cattle.io/highlight: 'info'
-    #   schema:
-    #     description: 'AirGappedChecksum is a string value with a sha256sum checksum to compare with checksum of existing sha256sum-<arch>.txt file for packages already available on the machine before performing air-gapped installation.'
-    #     openAPIV3Schema:
-    #       type: boolean
+      metadata:
+        annotations:
+          turtles-capi.cattle.io/section: 'Azure Machines'
+          turtles-capi.cattle.io/toggled-by: 'toggleSpotInstances'
+      schema:
+        openAPIV3Schema:
+          description: "Define the behavior of the virtual machine when it is evicted."
+          type: string
+          enum:
+          - Delete
+          - Deallocate
+    ## rke2 bootstrap
+    ### agent config
+    - name: rkeBootnodeAnnotations
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
+          turtles-capi.cattle.io/highlight: 'info'
+      schema:
+        openAPIV3Schema:
+          description: 'NodeAnnotations  are annotations that are created on nodes post bootstrap phase. Unfortunately it is not possible to apply annotations via kubelet using current bootstrap configurations. Issue\: https://github.com/kubernetes/kubernetes/issues/108046'
+          type: object
+          additionalProperties:
+            type: string
+    - name: rkeBootnodeLabels
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
+      schema:
+        openAPIV3Schema:
+          type: array
+          items:
+            type: string
+    - name: rkeBootnodeTaints
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
+      schema:
+        openAPIV3Schema:
+          type: array
+          items:
+            type: string
+    - name: rkeBootcisProfile
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
+          turtles-capi.cattle.io/highlight: 'info'
+      schema:
+        openAPIV3Schema:
+          description: 'Using the generic cis profile will ensure that the cluster passes the CIS benchmark (rke2-cis-1.XX-profile-hardened) associated with the Kubernetes version that RKE2 is running. For example, RKE2 v1.26.XX with the profile: cis will pass the rke2-cis-1.8-profile-hardened in Rancher.'
+          type: string
+          enum:
+          - cis
+          - cis-1.23
+          - cis-1.5
+          - cis-1.6
+    - name: rkeBootairGapped
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
+          turtles-capi.cattle.io/highlight: 'info'
+      schema:
+        description: 'AirGapped is a boolean value to define if the bootstrapping should be air-gapped, basically supposing that online container registries and RKE2 install scripts are not reachable.'
+        openAPIV3Schema:
+          type: boolean
+    - name: rkeBootairGappedChecksum
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
+          turtles-capi.cattle.io/highlight: 'info'
+      schema:
+        description: 'AirGappedChecksum is a string value with a sha256sum checksum to compare with checksum of existing sha256sum-<arch>.txt file for packages already available on the machine before performing air-gapped installation.'
+        openAPIV3Schema:
+          type: boolean
 
   patches:
     # - name: rke2ControlPlaneTemplate
