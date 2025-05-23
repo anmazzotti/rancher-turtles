@@ -421,145 +421,145 @@ spec:
           type: boolean
 
   patches:
-    - name: rke2ControlPlaneTemplate
-      definitions:
-      - jsonPatches:
-        - op: add
-          path: /spec/template/spec
-          valueFrom:
-            template: |
-              rolloutStrategy:
-                type: "RollingUpdate"
-                rollingUpdate:
-                  maxSurge: 1
-              agentConfig: {}
-              serverConfig:
-                cni: none
-                cloudProviderName: external
-                disableComponents:
-                  kubernetesComponents:
-                  - cloudController
-                etcd:
-                  exposeMetrics: '{{ .etcdexposeMetrics }}'
-                  backupConfig:
-                    disableAutomaticSnapshots: '{{ .toggleEtcdBackup }}' 
-                    snapshotName: '{{ .etcdBackupsnapshotName }}'
-                    scheduleCron: '{{ .etcdBackupScheduleChron }}'
-                    retention: '{{ .etcdBackupretention }}'
-                    directory: '{{ .etcdBackupdirectory }}'
-                    s3:
-                      endpoint:'{{ .etcdS3endpoint }}'
-                      endpointCASecret:'{{ .etcdS3endpointendpointCASecret }}'
-                      enforceSslVerify:'{{ .etcdS3enforceSslVerify }}'
-                      s3CredentialSecret:'{{ .etcdS3s3CredentialSecret }}'
-                      bucket:'{{ .etcdS3bucket }}'
-                      region:'{{ .etcdS3region }}'
-                      folder:'{{ .etcdS3folder }}'
-                kubeAPIServer:
-                  extraArgs:
-                  - --anonymous-auth=true
-              registrationMethod: '{{ .registrationMethod }}'
-              files:
-                - owner: root:root
-                  path: /etc/kubernetes/azure.json
-                  permissions: "0644"
-                - owner: root:root
-                  contentFrom:
-                      secret:
-                        key: control-plane-azure.json
-                        name: "{{ .builtin.controlPlane.machineTemplate.infrastructureRef.name }}-azure-json"
-                    path: /etc/kubernetes/azure.json
-                    permissions: "0644"
-        selector:
-          apiVersion: controlplane.cluster.x-k8s.io/v1beta1
-          kind: RKE2ControlPlaneTemplate
-          matchResources:
-            controlPlane: true
-    # initialize azure-specific props on azure machine templates
-    # cp and worker machines            
-    - name: azureMachineTemplate
-      definitions:
-        - jsonPatches:
-          - op: add
-            path: /spec/template/spec
-            valueFrom:
-              template: |
-                vmSize: '{{ .vmSize }}'
-                image:
-                  computeGallery: 
-                    gallery: '{{ .imageGallery }}'
-                    name: '{{ .imageName }}'
-                    version: '{{ trimPrefix "v" (trimSuffix "+rke2r1" .builtin.cluster.topology.version) }}'
-                osDisk:
-                  diskSizeGB: ' {{ .azdiskSizeGB }} '
-                  osType: '{{ .azosType }}'
-                  managedDisk: 
-                    storageAccountType: '{{ .azDiskstorageAccountType }}'
-                    diskEncryptionSetParameters:
-                      id: '{{ .azDiskid }}'
-                  cachingType:'{{ .azcachingType }}'
-                sshPublicKey: '{{ .azsshPublicKey }}'
-                spotVMOptions:
-                  maxPrice: '{{ .azMaxPrice }}'
-                  evictionPolicy: '{{ .azevictionPolicy  }}'
-          selector: 
-            apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
-            kind: AzureMachineTemplate
-            matchResources:
-              controlPlane: true
-              machineDeploymentClass:
-                names:
-                  - rke2-default-worker
-    - name: rke2BootstrapTemplate
-      definitions:
-        - jsonPatches:
-          - op: add
-            path: /spec/template/spec
-            valueFrom:
-              template: |
-                agentConfig:
-                  nodeLabels: '{{ .rkeBootnodeLabels }}' 
-                  nodeAnnotations: '{{ .rkeBootnodeAnnotations }}' 
-                  nodeTaints: '{{ .rkeBootnodeTaints }}'
-                  cisProfile: '{{ .rkeBootcisProfile }}'
-                  airGapped: '{{ .rkeBootairGapped }}'
-                  airGappedChecksum: '{{ .rkeBootairGappedChecksum }}'
+    # - name: rke2ControlPlaneTemplate
+    #   definitions:
+    #   - jsonPatches:
+    #     - op: add
+    #       path: /spec/template/spec
+    #       valueFrom:
+    #         template: |
+    #           rolloutStrategy:
+    #             type: "RollingUpdate"
+    #             rollingUpdate:
+    #               maxSurge: 1
+    #           agentConfig: {}
+    #           serverConfig:
+    #             cni: none
+    #             cloudProviderName: external
+    #             disableComponents:
+    #               kubernetesComponents:
+    #               - cloudController
+    #             etcd:
+    #               exposeMetrics: '{{ .etcdexposeMetrics }}'
+    #               backupConfig:
+    #                 disableAutomaticSnapshots: '{{ .toggleEtcdBackup }}' 
+    #                 snapshotName: '{{ .etcdBackupsnapshotName }}'
+    #                 scheduleCron: '{{ .etcdBackupScheduleChron }}'
+    #                 retention: '{{ .etcdBackupretention }}'
+    #                 directory: '{{ .etcdBackupdirectory }}'
+    #                 s3:
+    #                   endpoint:'{{ .etcdS3endpoint }}'
+    #                   endpointCASecret:'{{ .etcdS3endpointendpointCASecret }}'
+    #                   enforceSslVerify:'{{ .etcdS3enforceSslVerify }}'
+    #                   s3CredentialSecret:'{{ .etcdS3s3CredentialSecret }}'
+    #                   bucket:'{{ .etcdS3bucket }}'
+    #                   region:'{{ .etcdS3region }}'
+    #                   folder:'{{ .etcdS3folder }}'
+    #             kubeAPIServer:
+    #               extraArgs:
+    #               - --anonymous-auth=true
+    #           registrationMethod: '{{ .registrationMethod }}'
+    #           files:
+    #             - owner: root:root
+    #               path: /etc/kubernetes/azure.json
+    #               permissions: "0644"
+    #             - owner: root:root
+    #               contentFrom:
+    #                   secret:
+    #                     key: control-plane-azure.json
+    #                     name: "{{ .builtin.controlPlane.machineTemplate.infrastructureRef.name }}-azure-json"
+    #                 path: /etc/kubernetes/azure.json
+    #                 permissions: "0644"
+    #     selector:
+    #       apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+    #       kind: RKE2ControlPlaneTemplate
+    #       matchResources:
+    #         controlPlane: true
+    # # initialize azure-specific props on azure machine templates
+    # # cp and worker machines            
+    # - name: azureMachineTemplate
+    #   definitions:
+    #     - jsonPatches:
+    #       - op: add
+    #         path: /spec/template/spec
+    #         valueFrom:
+    #           template: |
+    #             vmSize: '{{ .vmSize }}'
+    #             image:
+    #               computeGallery: 
+    #                 gallery: '{{ .imageGallery }}'
+    #                 name: '{{ .imageName }}'
+    #                 version: '{{ trimPrefix "v" (trimSuffix "+rke2r1" .builtin.cluster.topology.version) }}'
+    #             osDisk:
+    #               diskSizeGB: ' {{ .azdiskSizeGB }} '
+    #               osType: '{{ .azosType }}'
+    #               managedDisk: 
+    #                 storageAccountType: '{{ .azDiskstorageAccountType }}'
+    #                 diskEncryptionSetParameters:
+    #                   id: '{{ .azDiskid }}'
+    #               cachingType:'{{ .azcachingType }}'
+    #             sshPublicKey: '{{ .azsshPublicKey }}'
+    #             spotVMOptions:
+    #               maxPrice: '{{ .azMaxPrice }}'
+    #               evictionPolicy: '{{ .azevictionPolicy  }}'
+    #       selector: 
+    #         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+    #         kind: AzureMachineTemplate
+    #         matchResources:
+    #           controlPlane: true
+    #           machineDeploymentClass:
+    #             names:
+    #               - rke2-default-worker
+    # - name: rke2BootstrapTemplate
+    #   definitions:
+    #     - jsonPatches:
+    #       - op: add
+    #         path: /spec/template/spec
+    #         valueFrom:
+    #           template: |
+    #             agentConfig:
+    #               nodeLabels: '{{ .rkeBootnodeLabels }}' 
+    #               nodeAnnotations: '{{ .rkeBootnodeAnnotations }}' 
+    #               nodeTaints: '{{ .rkeBootnodeTaints }}'
+    #               cisProfile: '{{ .rkeBootcisProfile }}'
+    #               airGapped: '{{ .rkeBootairGapped }}'
+    #               airGappedChecksum: '{{ .rkeBootairGappedChecksum }}'
 
-          selector: 
-            apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
-            kind: RKE2ConfigTemplate
-            matchResources:
-              machineDeploymentClass:
-                names:
-                  - rke2-default-worker
-    - name: azureClusterTemplate
-      definitions:
-        - selector:
-            apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
-            kind: AzureClusterTemplate
-            matchResources:
-              infrastructureCluster: true
-          jsonPatches:
-            - op: add
-              path: "/spec/template/spec/subscriptionID"
-              valueFrom:
-                variable: subscriptionID
-            - op: add
-              path: "/spec/template/spec/location"
-              valueFrom:
-                variable: location
-            - op: add
-              path: "/spec/template/spec/resourceGroup"
-              valueFrom:
-                variable: resourceGroup
-            - op: add
-              path: "/spec/template/spec/identityRef/name"
-              valueFrom:
-                variable: azureClusterIdentityName
-            - op: add
-              path: "/spec/template/spec/networkSpec/vnet/name"
-              valueFrom:
-                variable: builtin.cluster.name
+    #       selector: 
+    #         apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+    #         kind: RKE2ConfigTemplate
+    #         matchResources:
+    #           machineDeploymentClass:
+    #             names:
+    #               - rke2-default-worker
+    # - name: azureClusterTemplate
+    #   definitions:
+    #     - selector:
+    #         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+    #         kind: AzureClusterTemplate
+    #         matchResources:
+    #           infrastructureCluster: true
+    #       jsonPatches:
+    #         - op: add
+    #           path: "/spec/template/spec/subscriptionID"
+    #           valueFrom:
+    #             variable: subscriptionID
+    #         - op: add
+    #           path: "/spec/template/spec/location"
+    #           valueFrom:
+    #             variable: location
+    #         - op: add
+    #           path: "/spec/template/spec/resourceGroup"
+    #           valueFrom:
+    #             variable: resourceGroup
+    #         - op: add
+    #           path: "/spec/template/spec/identityRef/name"
+    #           valueFrom:
+    #             variable: azureClusterIdentityName
+    #         - op: add
+    #           path: "/spec/template/spec/networkSpec/vnet/name"
+    #           valueFrom:
+    #             variable: builtin.cluster.name
         
 ---
 apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
