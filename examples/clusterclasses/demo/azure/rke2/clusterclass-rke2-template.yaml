@@ -477,61 +477,61 @@ spec:
             controlPlane: true
     ## initialize azure-specific props on azure machine templates
     ## cp and worker machines            
-    - name: azureMachineTemplate
-      definitions:
-        - jsonPatches:
-          - op: add
-            path: /spec/template/spec
-            valueFrom:
-              template: |
-                vmSize: '{{ .vmSize }}'
-                image:
-                  computeGallery: 
-                    gallery: '{{ .imageGallery }}'
-                    name: '{{ .imageName }}'
-                    version: '{{ trimPrefix "v" (trimSuffix "+rke2r1" .builtin.cluster.topology.version) }}'
-                osDisk:
-                  diskSizeGB: ' {{ .azdiskSizeGB }} '
-                  osType: '{{ .azosType }}'
-                  managedDisk: 
-                    storageAccountType: '{{ .azDiskstorageAccountType }}'
-                    diskEncryptionSetParameters:
-                      id: '{{ .azDiskid }}'
-                  cachingType:'{{ .azcachingType }}'
-                sshPublicKey: '{{ .azsshPublicKey }}'
-                spotVMOptions:
-                  maxPrice: '{{ .azMaxPrice }}'
-                  evictionPolicy: '{{ .azevictionPolicy  }}'
-          selector: 
-            apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
-            kind: AzureMachineTemplate
-            matchResources:
-              controlPlane: true
-              machineDeploymentClass:
-                names:
-                  - rke2-default-worker
-    - name: rke2BootstrapTemplate
-      definitions:
-        - jsonPatches:
-          - op: add
-            path: /spec/template/spec
-            valueFrom:
-              template: |
-                agentConfig:
-                  nodeLabels: '{{ .rkeBootnodeLabels }}' 
-                  nodeAnnotations: '{{ .rkeBootnodeAnnotations }}' 
-                  nodeTaints: '{{ .rkeBootnodeTaints }}'
-                  cisProfile: '{{ .rkeBootcisProfile }}'
-                  airGapped: '{{ .rkeBootairGapped }}'
-                  airGappedChecksum: '{{ .rkeBootairGappedChecksum }}'
+    # - name: azureMachineTemplate
+    #   definitions:
+    #     - jsonPatches:
+    #       - op: add
+    #         path: /spec/template/spec
+    #         valueFrom:
+    #           template: |
+    #             vmSize: '{{ .vmSize }}'
+    #             image:
+    #               computeGallery: 
+    #                 gallery: '{{ .imageGallery }}'
+    #                 name: '{{ .imageName }}'
+    #                 version: '{{ trimPrefix "v" (trimSuffix "+rke2r1" .builtin.cluster.topology.version) }}'
+    #             osDisk:
+    #               diskSizeGB: ' {{ .azdiskSizeGB }} '
+    #               osType: '{{ .azosType }}'
+    #               managedDisk: 
+    #                 storageAccountType: '{{ .azDiskstorageAccountType }}'
+    #                 diskEncryptionSetParameters:
+    #                   id: '{{ .azDiskid }}'
+    #               cachingType:'{{ .azcachingType }}'
+    #             sshPublicKey: '{{ .azsshPublicKey }}'
+    #             spotVMOptions:
+    #               maxPrice: '{{ .azMaxPrice }}'
+    #               evictionPolicy: '{{ .azevictionPolicy  }}'
+    #       selector: 
+    #         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+    #         kind: AzureMachineTemplate
+    #         matchResources:
+    #           controlPlane: true
+    #           machineDeploymentClass:
+    #             names:
+    #               - rke2-default-worker
+    # - name: rke2BootstrapTemplate
+    #   definitions:
+    #     - jsonPatches:
+    #       - op: add
+    #         path: /spec/template/spec
+    #         valueFrom:
+    #           template: |
+    #             agentConfig:
+    #               nodeLabels: '{{ .rkeBootnodeLabels }}' 
+    #               nodeAnnotations: '{{ .rkeBootnodeAnnotations }}' 
+    #               nodeTaints: '{{ .rkeBootnodeTaints }}'
+    #               cisProfile: '{{ .rkeBootcisProfile }}'
+    #               airGapped: '{{ .rkeBootairGapped }}'
+    #               airGappedChecksum: '{{ .rkeBootairGappedChecksum }}'
 
-          selector: 
-            apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
-            kind: RKE2ConfigTemplate
-            matchResources:
-              machineDeploymentClass:
-                names:
-                  - rke2-default-worker
+    #       selector: 
+    #         apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+    #         kind: RKE2ConfigTemplate
+    #         matchResources:
+    #           machineDeploymentClass:
+    #             names:
+    #               - rke2-default-worker
     - name: azureClusterTemplate
       definitions:
         - selector:
