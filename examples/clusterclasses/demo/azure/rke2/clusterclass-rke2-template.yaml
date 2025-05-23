@@ -421,60 +421,60 @@ spec:
           type: boolean
 
   patches:
-    - name: rke2ControlPlaneTemplate
-      definitions:
-      - jsonPatches:
-        - op: add
-          path: /spec/template/spec
-          valueFrom:
-            template: |
-              rolloutStrategy:
-                type: "RollingUpdate"
-                rollingUpdate:
-                  maxSurge: 1
-              agentConfig: {}
-              serverConfig:
-                cni: none
-                cloudProviderName: external
-                disableComponents:
-                  kubernetesComponents:
-                  - cloudController
-                etcd:
-                  exposeMetrics: '{{ .etcdexposeMetrics }}'
-                  backupConfig:
-                    disableAutomaticSnapshots: '{{ .toggleEtcdBackup }}' 
-                    snapshotName: '{{ .etcdBackupsnapshotName }}'
-                    scheduleCron: '{{ .etcdBackupScheduleChron }}'
-                    retention: '{{ .etcdBackupretention }}'
-                    directory: '{{ .etcdBackupdirectory }}'
-                    s3:
-                      endpoint:'{{ .etcdS3endpoint }}'
-                      endpointCASecret:'{{ .etcdS3endpointendpointCASecret }}'
-                      enforceSslVerify:'{{ .etcdS3enforceSslVerify }}'
-                      s3CredentialSecret:'{{ .etcdS3s3CredentialSecret }}'
-                      bucket:'{{ .etcdS3bucket }}'
-                      region:'{{ .etcdS3region }}'
-                      folder:'{{ .etcdS3folder }}'
-                kubeAPIServer:
-                  extraArgs:
-                  - --anonymous-auth=true
-              registrationMethod: '{{ .registrationMethod }}'
-              files:
-                - owner: root:root
-                  path: /etc/kubernetes/azure.json
-                  permissions: "0644"
-                - owner: root:root
-                  contentFrom:
-                      secret:
-                        key: control-plane-azure.json
-                        name: "{{ .builtin.controlPlane.machineTemplate.infrastructureRef.name }}-azure-json"
-                    path: /etc/kubernetes/azure.json
-                    permissions: "0644"
-        selector:
-          apiVersion: controlplane.cluster.x-k8s.io/v1beta1
-          kind: RKE2ControlPlaneTemplate
-          matchResources:
-            controlPlane: true
+    # - name: rke2ControlPlaneTemplate
+    #   definitions:
+    #   - jsonPatches:
+    #     - op: add
+    #       path: /spec/template/spec
+    #       valueFrom:
+    #         template: |
+    #           rolloutStrategy:
+    #             type: "RollingUpdate"
+    #             rollingUpdate:
+    #               maxSurge: 1
+    #           agentConfig: {}
+    #           serverConfig:
+    #             cni: none
+    #             cloudProviderName: external
+    #             disableComponents:
+    #               kubernetesComponents:
+    #               - cloudController
+    #             etcd:
+    #               exposeMetrics: '{{ .etcdexposeMetrics }}'
+    #               backupConfig:
+    #                 disableAutomaticSnapshots: '{{ .toggleEtcdBackup }}' 
+    #                 snapshotName: '{{ .etcdBackupsnapshotName }}'
+    #                 scheduleCron: '{{ .etcdBackupScheduleChron }}'
+    #                 retention: '{{ .etcdBackupretention }}'
+    #                 directory: '{{ .etcdBackupdirectory }}'
+    #                 s3:
+    #                   endpoint:'{{ .etcdS3endpoint }}'
+    #                   endpointCASecret:'{{ .etcdS3endpointendpointCASecret }}'
+    #                   enforceSslVerify:'{{ .etcdS3enforceSslVerify }}'
+    #                   s3CredentialSecret:'{{ .etcdS3s3CredentialSecret }}'
+    #                   bucket:'{{ .etcdS3bucket }}'
+    #                   region:'{{ .etcdS3region }}'
+    #                   folder:'{{ .etcdS3folder }}'
+    #             kubeAPIServer:
+    #               extraArgs:
+    #               - --anonymous-auth=true
+    #           registrationMethod: '{{ .registrationMethod }}'
+    #           files:
+    #             - owner: root:root
+    #               path: /etc/kubernetes/azure.json
+    #               permissions: "0644"
+    #             - owner: root:root
+    #               contentFrom:
+    #                   secret:
+    #                     key: control-plane-azure.json
+    #                     name: "{{ .builtin.controlPlane.machineTemplate.infrastructureRef.name }}-azure-json"
+    #                 path: /etc/kubernetes/azure.json
+    #                 permissions: "0644"
+    #     selector:
+    #       apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+    #       kind: RKE2ControlPlaneTemplate
+    #       matchResources:
+    #         controlPlane: true
     ## initialize azure-specific props on azure machine templates
     ## cp and worker machines            
     # - name: azureMachineTemplate
