@@ -139,6 +139,35 @@ spec:
           description: "The VM size used by machines."
           type: string
           default: "Standard_D2s_v3"
+    ### azure machine disk 
+    - name: toggleazDisk
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'Azure Machines'
+          turtles-capi.cattle.io/label: 'Configure OS Disk'
+      schema:
+        openAPIV3Schema:
+          type: boolean
+          default: false
+    - name: azdiskSizeGB
+      metadata:
+        annotations:
+          turtles-capi.cattle.io/section: 'Azure Machines'
+          turtles-capi.cattle.io/toggled-by: 'toggleazDisk'
+      schema:
+        openAPIV3Schema:
+          description: "Disk Size sets the size in GB of the OS disk. Default: 128
+          type: integer
+          default: 128
+    - name: azDiskstorageAccountType
+      metadata:
+        annotations:
+          turtles-capi.cattle.io/section: 'Azure Machines'
+          turtles-capi.cattle.io/toggled-by: 'toggleazDisk'
+      schema:
+        openAPIV3Schema:
+          type: string
+
     ### azure machine spot instance 
     - name: toggleSpotInstances
       metadata:
@@ -473,12 +502,9 @@ spec:
                     version: '{{ trimPrefix "v" (trimSuffix "+rke2r1" .builtin.cluster.topology.version) }}'
                 osDisk:
                   diskSizeGB: ' {{ .azdiskSizeGB }} '
-                  osType: '{{ .azosType }}'
+                  osType: Linux
                   managedDisk: 
                     storageAccountType: '{{ .azDiskstorageAccountType }}'
-                    diskEncryptionSetParameters:
-                      id: '{{ .azDiskid }}'
-                  cachingType: '{{ .azcachingType }}'
                 spotVMOptions:
                   maxPrice: '{{ .azMaxPrice }}'
                   evictionPolicy: '{{ .azevictionPolicy  }}'
