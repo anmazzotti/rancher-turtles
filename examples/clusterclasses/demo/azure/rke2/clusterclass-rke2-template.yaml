@@ -460,6 +460,10 @@ spec:
                   extraArgs:
                   - --anonymous-auth=true
               registrationMethod: '{{ .registrationMethod }}'
+              files:
+              - owner: root:root
+                path: /etc/kubernetes/azure.json
+                permissions: "0644"
         selector:
           apiVersion: controlplane.cluster.x-k8s.io/v1beta1
           kind: RKE2ControlPlaneTemplate
