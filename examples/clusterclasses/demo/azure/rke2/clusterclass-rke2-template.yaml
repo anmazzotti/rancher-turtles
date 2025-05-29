@@ -502,6 +502,7 @@ spec:
             valueFrom:
               template: |
                 vmSize: '{{ .vmSize }}'
+                sshPublicKey: '{{ .azsshPublicKey }}'
                 image:
                   computeGallery: 
                     gallery: '{{ .imageGallery }}'
@@ -514,8 +515,7 @@ spec:
                     storageAccountType: '{{ .azDiskstorageAccountType }}'
                     diskEncryptionSetParameters:
                       id: '{{ .azDiskid }}'
-                  cachingType:'{{ .azcachingType }}'
-                sshPublicKey: '{{ .azsshPublicKey }}'
+                  cachingType: '{{ .azcachingType }}'
                 spotVMOptions:
                   maxPrice: '{{ .azMaxPrice }}'
                   evictionPolicy: '{{ .azevictionPolicy  }}'
