@@ -460,22 +460,34 @@ spec:
                   extraArgs:
                   - --anonymous-auth=true
               registrationMethod: '{{ .registrationMethod }}'
-              files:
-                - owner: root:root
-                  path: /etc/kubernetes/azure.json
-                  permissions: "0644"
-                - owner: root:root
-                  contentFrom:
-                      secret:
-                        key: control-plane-azure.json
-                        name: "{{ .builtin.controlPlane.machineTemplate.infrastructureRef.name }}-azure-json"
-                    path: /etc/kubernetes/azure.json
-                    permissions: "0644"
         selector:
           apiVersion: controlplane.cluster.x-k8s.io/v1beta1
           kind: RKE2ControlPlaneTemplate
           matchResources:
             controlPlane: true
+    - name: azureMachineTemplateTurtles
+      definitions:
+        - selector:
+            apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+            kind: RKE2ControlPlaneTemplate
+            matchResources:
+              controlPlane: true
+          jsonPatches:
+            - op: add
+              path: /spec/template/spec/files/-
+              valueFrom:
+                template: |
+                    contentFrom:
+                      secret:
+                        key: control-plane-azure.json
+                        name: "{{ .builtin.controlPlane.machineTemplate.infrastructureRef.name }}-azure-json"
+                    owner: root:root
+                    path: /etc/kubernetes/azure.json
+                    permissions: "0644"
+            - op: add
+              path: /spec/template/spec/registrationMethod
+              valueFrom:
+                variable: registrationMethod
     # initialize azure-specific props on azure machine templates
     # cp and worker machines            
     - name: azureMachineTemplate
