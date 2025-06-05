@@ -45,6 +45,9 @@ spec:
           type: string
     - name: location
       required: true
+      annotations:
+          turtles-capi.cattle.io/section: 'general'
+          turtles-capi.cattle.io/group: 'Azure'
       schema:
         openAPIV3Schema:
           description: "The Azure location where the Cluster will be created."
@@ -112,7 +115,7 @@ spec:
       required: true
       schema:
         openAPIV3Schema:
-          description: "The version of the image used is determined from this cluster's kubernetes version. For example, if you want to create a v1.31.1+rke1r1 cluster, this image in this image gallery must contain a version named 1.31.1"
+          description: "This cluster's kubernetes version will be used to determined the version of this image to use. For example, if you want to create a v1.31.1+rke1r1 cluster, this image in this image gallery must contain a version named 1.31.1"
           type: string
           default: "capi-ubun2-2404"          
     - name: vmSize
