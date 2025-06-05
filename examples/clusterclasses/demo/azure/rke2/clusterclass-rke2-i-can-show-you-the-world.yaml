@@ -424,15 +424,15 @@ spec:
                   - rke2-default-worker
           jsonPatches:
             - op: add
-              path: 'spec/template/spec/agentConfig/nodeLabels'
+              path: '/spec/template/spec/agentConfig/nodeLabels'
               valueFrom:
                 variable: rkeBootnodeLabels
             - op: add
-              path: 'spec/template/spec/agentConfig/nodeAnnotations'
+              path: '/spec/template/spec/agentConfig/nodeAnnotations'
               valueFrom:
                 variable: rkeBootnodeAnnotations
             - op: add
-              path: 'spec/template/spec/agentConfig/nodeTaints'
+              path: '/spec/template/spec/agentConfig/nodeTaints'
               valueFrom:
                 variable: rkeBootnodeTaints
 ---
