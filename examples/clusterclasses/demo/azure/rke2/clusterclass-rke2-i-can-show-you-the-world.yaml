@@ -304,7 +304,7 @@ spec:
     - name: rkeBootnodeAnnotations
       metadata:
         annotations: 
-          turtles-capi.cattle.io/section: 'workers'
+          turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
           turtles-capi.cattle.io/highlight: 'info'
       schema:
         openAPIV3Schema:
@@ -315,7 +315,7 @@ spec:
     - name: rkeBootnodeLabels
       metadata:
         annotations: 
-          turtles-capi.cattle.io/section: 'workers'
+          turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
       schema:
         openAPIV3Schema:
           type: array
@@ -324,7 +324,7 @@ spec:
     - name: rkeBootnodeTaints
       metadata:
         annotations: 
-          turtles-capi.cattle.io/section: 'workers'
+          turtles-capi.cattle.io/section: 'RKE2 Bootstrap'
       schema:
         openAPIV3Schema:
           type: array
