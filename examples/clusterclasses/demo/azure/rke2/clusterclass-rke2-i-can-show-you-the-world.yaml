@@ -166,7 +166,7 @@ spec:
           description: |
             Snapshot interval time in cron spec. eg. every 5 hours '* */5 * * *'
           type: string
-          example: '0 */12 * * *'
+          default: '0 */12 * * *'
     - name: etcdBackupretention
       metadata:
         annotations: 
@@ -177,7 +177,7 @@ spec:
         openAPIV3Schema:
           description: 'Number of snapshots to retain'
           type: string
-          example: '5'
+          default: '5'
     - name: etcdBackupsnapshotName
       metadata:
         annotations: 
