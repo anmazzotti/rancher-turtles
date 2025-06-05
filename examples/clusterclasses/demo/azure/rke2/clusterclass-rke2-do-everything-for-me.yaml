@@ -97,27 +97,27 @@ spec:
             namespace:
               type: string
               default: default
-    - name: imageGallery
-      metadata:
-        annotations:
-          turtles-capi.cattle.io/section: 'workers'
-      required: true
-      schema:
-        openAPIV3Schema:
-          description: "The image Public gallery name."
-          type: string
-          default: "ClusterAPI-f72ceb4f-5159-4c26-a0fe-2ea738f0d019"
-    - name: imageName
-      metadata:
-        annotations:
-          turtles-capi.cattle.io/section: 'workers'
-          turtles-capi.cattle.io/highlight: 'warning'
-      required: true
-      schema:
-        openAPIV3Schema:
-          description: "This cluster's kubernetes version will be used to determined the version of this image to use. For example, if you want to create a v1.31.1+rke1r1 cluster, this image in this image gallery must contain a version named 1.31.1"
-          type: string
-          default: "capi-ubun2-2404"          
+    # - name: imageGallery
+    #   metadata:
+    #     annotations:
+    #       turtles-capi.cattle.io/section: 'workers'
+    #   required: true
+    #   schema:
+    #     openAPIV3Schema:
+    #       description: "The image Public gallery name."
+    #       type: string
+    #       default: "ClusterAPI-f72ceb4f-5159-4c26-a0fe-2ea738f0d019"
+    # - name: imageName
+    #   metadata:
+    #     annotations:
+    #       turtles-capi.cattle.io/section: 'workers'
+    #       turtles-capi.cattle.io/highlight: 'warning'
+    #   required: true
+    #   schema:
+    #     openAPIV3Schema:
+    #       description: "This cluster's kubernetes version will be used to determined the version of this image to use. For example, if you want to create a v1.31.1+rke1r1 cluster, this image in this image gallery must contain a version named 1.31.1"
+    #       type: string
+    #       default: "capi-ubun2-2404"          
     - name: vmSize
       metadata:
         annotations:
