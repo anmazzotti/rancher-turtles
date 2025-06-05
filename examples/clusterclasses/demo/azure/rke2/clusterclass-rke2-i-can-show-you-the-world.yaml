@@ -299,7 +299,37 @@ spec:
         openAPIV3Schema:
           type: string
 
-
+    ## rke2 bootstrap
+    ### agent config
+    - name: rkeBootnodeAnnotations
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'workers'
+          turtles-capi.cattle.io/highlight: 'info'
+      schema:
+        openAPIV3Schema:
+          description: 'NodeAnnotations  are annotations that are created on nodes post bootstrap phase. Unfortunately it is not possible to apply annotations via kubelet using current bootstrap configurations. Issue\: https://github.com/kubernetes/kubernetes/issues/108046'
+          type: object
+          additionalProperties:
+            type: string
+    - name: rkeBootnodeLabels
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'workers'
+      schema:
+        openAPIV3Schema:
+          type: array
+          items:
+            type: string
+    - name: rkeBootnodeTaints
+      metadata:
+        annotations: 
+          turtles-capi.cattle.io/section: 'workers'
+      schema:
+        openAPIV3Schema:
+          type: array
+          items:
+            type: string
 
 
   patches:
@@ -383,6 +413,28 @@ spec:
               path: "/spec/template/spec/vmSize"
               valueFrom:
                 variable: vmSize
+    - name: rke2BootstrapTemplate
+      definitions:
+        - selector:
+            apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+            kind: RKE2ConfigTemplate
+            matchResources:
+              machineDeploymentClass:
+                names:
+                  - rke2-default-worker
+          jsonPatches:
+            - op: add
+              path: 'spec/template/spec/agentConfig/nodeLabels'
+              valueFrom:
+                variable: rkeBootnodeLabels
+            - op: add
+              path: 'spec/template/spec/agentConfig/nodeAnnotations'
+              valueFrom:
+                variable: rkeBootnodeAnnotations
+            - op: add
+              path: 'spec/template/spec/agentConfig/nodeTaints'
+              valueFrom:
+                variable: rkeBootnodeTaints
 ---
 apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
 kind: RKE2ConfigTemplate
