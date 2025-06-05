@@ -27,4 +27,4 @@ spec:
       - key: clusterclass-name.fleet.addons.cluster.x-k8s.io
         operator: In
         values: 
-        - new-azure-rke2-example
+        - annotated-azure-rke2-example

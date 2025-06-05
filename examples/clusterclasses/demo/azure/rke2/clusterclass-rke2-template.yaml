@@ -156,7 +156,7 @@ spec:
           turtles-capi.cattle.io/toggled-by: 'toggleazDisk'
       schema:
         openAPIV3Schema:
-          description: 'Disk Size sets the size in GB of the OS disk. Default: 128'
+          description: 'Disk Size is an integer that defines the size of the OS disk in GB.'
           type: integer
           default: 128
     - name: azDiskstorageAccountType
@@ -297,7 +297,7 @@ spec:
       schema:
         openAPIV3Schema:
           description: |
-            EndpointCA references the Secret that contains a custom CA that should be trusted to connect to S3 endpoint. The secret must contain a key named \'ca.pem\' that contains the CA certificate.
+            EndpointCA references the Secret that contains a custom CA that should be trusted to connect to S3 endpoint. The secret must contain a key named 'ca.pem' that contains the CA certificate.
           type: string
     - name: etcdS3s3CredentialSecret
       metadata:
@@ -309,7 +309,7 @@ spec:
       schema:
         openAPIV3Schema:
           description: |
-            S3CredentialSecret is a reference to a Secret containing the Access Key and Secret Key necessary to access the target S3 Bucket. The Secret must contain the following keys: \'aws_access_key_id\' and \'aws_secret_access_key\'. If empty, the controller will default to IAM authentication
+            S3CredentialSecret is a reference to a Secret containing the Access Key and Secret Key necessary to access the target S3 Bucket. The Secret must contain the following keys: 'aws_access_key_id' and 'aws_secret_access_key'. If empty, the controller will default to IAM authentication
           type: string
     - name: etcdS3region
       metadata:

@@ -1,7 +1,7 @@
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: ClusterClass
 metadata:
-  name: new-azure-rke2-example
+  name: annotated-azure-rke2-example
 spec:
   controlPlane:
     ref:
@@ -34,6 +34,10 @@ spec:
               name: rke2-default-worker
   variables:
     - name: subscriptionID
+      metadata:
+        annotations:
+          turtles-capi.cattle.io/section: 'general'
+          turtles-capi.cattle.io/group: 'Azure'
       required: true
       schema:
         openAPIV3Schema:
@@ -56,6 +60,10 @@ spec:
             - westeurope
             - westus2
     - name: resourceGroup
+      metadata:
+        annotations:
+          turtles-capi.cattle.io/section: 'general'
+          turtles-capi.cattle.io/group: 'Azure'
       required: true
       schema:
         openAPIV3Schema:
@@ -71,9 +79,9 @@ spec:
     - name: azureClusterIdentity
       metadata:
         annotations:
-        turtles-capi.cattle.io/section: 'general'
-        turtles-capi.cattle.io/group: 'Azure'
-        turtles-capi.cattle.io/type: 'infrastructure.cluster.x-k8s.io.azureclusteridentity'
+          turtles-capi.cattle.io/section: 'general'
+          turtles-capi.cattle.io/group: 'Azure'
+          turtles-capi.cattle.io/type: 'infrastructure.cluster.x-k8s.io.azureclusteridentity'
       required: true
       schema:
         openAPIV3Schema:
@@ -87,6 +95,9 @@ spec:
               type: string
               default: default
     - name: imageGallery
+      metadata:
+        annotations:
+          turtles-capi.cattle.io/section: 'workers'
       required: true
       schema:
         openAPIV3Schema:
@@ -94,6 +105,9 @@ spec:
           type: string
           default: "ClusterAPI-f72ceb4f-5159-4c26-a0fe-2ea738f0d019"
     - name: imageName
+      metadata:
+        annotations:
+          turtles-capi.cattle.io/section: 'workers'
       required: true
       schema:
         openAPIV3Schema:
@@ -101,6 +115,9 @@ spec:
           type: string
           default: "capi-ubun2-2404"          
     - name: vmSize
+      metadata:
+        annotations:
+          turtles-capi.cattle.io/section: 'workers'
       required: true
       schema:
         openAPIV3Schema:
@@ -108,6 +125,9 @@ spec:
           type: string
           default: "Standard_D2s_v3"
     - name: registrationMethod
+      metadata:
+        annotations:
+          turtles-capi.cattle.io/section: 'controlplane'
       required: true
       schema:
         openAPIV3Schema:
@@ -206,7 +226,7 @@ spec:
 apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
 kind: RKE2ConfigTemplate
 metadata:
-  name: new-rke2-default-worker-bootstrap
+  name: annotated-rke2-default-worker-bootstrap
 spec:
   template:
     spec: {}
@@ -214,7 +234,7 @@ spec:
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: AzureClusterTemplate
 metadata:
-  name: new-azure-cluster
+  name: annotated-azure-cluster
 spec:
   template:
     spec:
@@ -235,7 +255,7 @@ spec:
 apiVersion: controlplane.cluster.x-k8s.io/v1beta1
 kind: RKE2ControlPlaneTemplate
 metadata:
-  name: new-rke2-control-plane
+  name: annotated-rke2-control-plane
 spec:
   template:
     spec:
@@ -261,7 +281,7 @@ spec:
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: AzureMachineTemplate
 metadata:
-  name: new-rke2-control-plane
+  name: annotated-rke2-control-plane
 spec:
   template:
     spec:
@@ -278,7 +298,7 @@ spec:
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: AzureMachineTemplate
 metadata:
-  name: new-rke2-default-worker
+  name: annotated-rke2-default-worker
 spec:
   template:
     spec:
