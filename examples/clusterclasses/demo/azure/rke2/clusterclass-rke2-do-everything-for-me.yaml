@@ -218,14 +218,14 @@ spec:
                 names:
                   - rke2-default-worker
           jsonPatches:
-            - op: add
-              path: "/spec/template/spec/image/computeGallery/gallery"
-              valueFrom:
-                variable: imageGallery
-            - op: add
-              path: "/spec/template/spec/image/computeGallery/name"
-              valueFrom:
-                variable: imageName
+            # - op: add
+            #   path: "/spec/template/spec/image/computeGallery/gallery"
+            #   valueFrom:
+            #     variable: imageGallery
+            # - op: add
+            #   path: "/spec/template/spec/image/computeGallery/name"
+            #   valueFrom:
+            #     variable: imageName
             - op: replace
               path: /spec/template/spec/image/computeGallery/version
               valueFrom:
