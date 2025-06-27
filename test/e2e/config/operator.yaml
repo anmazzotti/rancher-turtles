@@ -117,6 +117,7 @@ variables:
 
   # Credentials used to pull images from docker.io
   DOCKER_REGISTRY_TOKEN: ""
+  DOCKER_REGISTRY_USERNAME: ""
   # The '.dockerconfigjson' value for the dockerconfigjson Secret
   # See: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#registry-secret-existing-credentials
   # This can be used to configure a downstream cluster with a imagePullSecret.
