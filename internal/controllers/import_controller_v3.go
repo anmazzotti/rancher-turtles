@@ -294,8 +294,9 @@ func (r *CAPIImportManagementV3Reconciler) reconcileNormal(ctx context.Context, 
 			},
 		},
 		Spec: managementv3.ClusterSpec{
-			DisplayName: capiCluster.Name,
-			Description: "CAPI cluster imported to Rancher",
+			DisplayName:        capiCluster.Name,
+			Description:        "CAPI cluster imported to Rancher",
+			FleetWorkspaceName: capiCluster.Namespace,
 		},
 	}
 

@@ -212,6 +212,7 @@ var _ = Describe("reconcile CAPI Cluster", func() {
 			g.Expect(rancherClusters.Items[0].Name).To(ContainSubstring("c-"))
 			g.Expect(rancherClusters.Items[0].Annotations).To(HaveKey(turtlesannotations.NoCreatorRBACAnnotation))
 			g.Expect(rancherClusters.Items[0].Finalizers).To(ContainElement(managementv3.CapiClusterFinalizer))
+			g.Expect(rancherClusters.Items[0].Spec.FleetWorkspaceName).To(Equal(capiCluster.Namespace))
 		}).Should(Succeed())
 
 		Eventually(func(g Gomega) {
