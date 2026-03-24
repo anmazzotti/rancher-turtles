@@ -60,6 +60,7 @@ func KindWithExtraPortMappingsBootstrapCluster(ctx context.Context, config *clus
 		KubernetesVersion:  kubernetesVersion,
 		RequiresDockerSock: false,
 		Images:             config.Images,
+		ExtraMounts:        []v1alpha4.Mount{},
 		ExtraPortMappings: []v1alpha4.PortMapping{
 			{ContainerPort: 80, HostPort: 80, Protocol: v1alpha4.PortMappingProtocolTCP},
 			{ContainerPort: 443, HostPort: 443, Protocol: v1alpha4.PortMappingProtocolTCP},

@@ -220,6 +220,11 @@ CLUSTER_NAME ?= capi-test
 CACHE_DIR ?= .buildx-cache/
 CACHE_COMMANDS = "--cache-from type=local,src=$(CACHE_DIR) --cache-to type=local,dest=$(CACHE_DIR),mode=max"
 
+# ETCD verification
+ETCD_RUN_COLLECTION ?= true
+ETCD_DUMP_DIRECTORY ?= /tmp/capi-test/etcd
+ETCD_DUMP_SCRIPT_PATH ?= $(ETCD_DUMP_DIRECTORY)/collect-etcd-data.sh
+
 .PHONY: all
 all: build
 
@@ -289,7 +294,7 @@ vendor-clean:
 	rm -rf vendor
 
 .PHOHY: dev-env
-dev-env: build-local-rancher-charts ## Create a local development environment
+dev-env: prepare-etcd-dump build-local-rancher-charts ## Create a local development environment
 	./scripts/turtles-dev.sh ${RANCHER_HOSTNAME}
 
 ## --------------------------------------
@@ -639,7 +644,10 @@ SKIP_RESOURCE_CLEANUP=$(SKIP_RESOURCE_CLEANUP) \
 USE_EXISTING_CLUSTER=$(USE_EXISTING_CLUSTER) \
 TURTLES_PROVIDERS=$(TURTLES_PROVIDERS) \
 TURTLES_PROVIDERS_PATH=$(ROOT_DIR)/$(CHART_PACKAGE_DIR)/rancher-turtles-providers-$(RANCHER_CHART_DEV_VERSION).tgz \
-CREATE_RANCHER_CERTS_SCRIPT_PATH=$(CREATE_RANCHER_CERTS_SCRIPT_PATH)
+CREATE_RANCHER_CERTS_SCRIPT_PATH=$(CREATE_RANCHER_CERTS_SCRIPT_PATH) \
+ETCD_DUMP_SCRIPT_PATH=$(ETCD_DUMP_SCRIPT_PATH) \
+ETCD_DUMP_DIRECTORY=$(ETCD_DUMP_DIRECTORY) \
+ETCD_RUN_COLLECTION=$(ETCD_RUN_COLLECTION) 
 
 E2E_RUN_COMMAND=$(E2ECONFIG_VARS) $(GINKGO) -v --trace -p -procs=10 -poll-progress-after=$(GINKGO_POLL_PROGRESS_AFTER) \
 		-poll-progress-interval=$(GINKGO_POLL_PROGRESS_INTERVAL) --tags=e2e --focus="$(GINKGO_FOCUS)" --label-filter="$(GINKGO_LABEL_FILTER)" \
@@ -658,7 +666,7 @@ test-e2e: ## If MANAGEMENT_CLUSTER_ENVIRONMENT is 'eks', run remote e2e tests, o
 	fi
 
 .PHONY: test-e2e-local
-test-e2e-local: $(GINKGO) $(HELM) $(CLUSTERCTL) $(ENVSUBST) kubectl e2e-image build-local-rancher-charts ## Run the end-to-end tests
+test-e2e-local: $(GINKGO) $(HELM) $(CLUSTERCTL) $(ENVSUBST) kubectl e2e-image build-local-rancher-charts prepare-etcd-dump ## Run the end-to-end tests
 	$(E2E_RUN_COMMAND)
 
 .PHONY: test-e2e-remote
@@ -729,6 +737,7 @@ clean-rancher-charts: ## Remove the local rancher charts folder
 ## --------------------------------------
 
 .PHONY: collect-artifacts
+<<<<<<< Updated upstream
 collect-artifacts: kubectl
 	mkdir -p $(ARTIFACTS_FOLDER)
 	kubectl crust-gather collect -f $(ARTIFACTS_FOLDER)/gather
@@ -742,3 +751,20 @@ update-core-capi-manifest: kubectl
 	mkdir -p $(ARTIFACTS_FOLDER)
 	ARTIFACTS_FOLDER=$(ARTIFACTS_FOLDER) CAPI_VERSION=$(CAPI_MANIFEST_UPDATE_VERSION) OUTPUT_FILE=$(CAPI_MANIFEST_OUTPUT_FILE) hack/fetch-core-capi.sh
 
+=======
+collect-artifacts: $(CRUST_GATHER_BIN)
+	$(CRUST_GATHER) collect -f $(ARTIFACTS_FOLDER)/gather
+
+## --------------------------------------
+## Prepare environment to dump etcd.
+## This cleanups the to-be-mounted directory
+## and copies a fresh version of the
+## etcd collection script in it.
+## --------------------------------------
+
+.PHONY: prepare-etcd-dump
+prepare-etcd-dump:
+	rm -rf $(ETCD_DUMP_DIRECTORY)
+	mkdir -p $(ETCD_DUMP_DIRECTORY)
+	cp $(ROOT_DIR)/scripts/collect-etcd-data.sh $(ETCD_DUMP_SCRIPT_PATH)
+>>>>>>> Stashed changes

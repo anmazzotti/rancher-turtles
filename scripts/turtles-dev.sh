@@ -244,6 +244,10 @@ install_local_providers_chart() {
 echo "Installing local Rancher Turtles Providers..."
 install_local_providers_chart
 
+echo "In order to collect etcd data, you can run at any time:"
+echo "  docker exec capi-test-control-plane /tmp/capi-test/etcd/collect-etcd-data.sh"
+echo "Results are in the mounted /tmp/capi-test/etcd directory"
+
 if [ "$USE_TILT_DEV" == "true" ]; then
     kubectl wait --for=create deployments/rancher-turtles-controller-manager --namespace cattle-turtles-system --timeout=300s
     echo "Using Tilt for development..."

@@ -11,6 +11,7 @@ concurrency:
 
 env:
   GINKGO_LABEL_FILTER: ${{ github.event.pull_request.labels && (contains(join(github.event.pull_request.labels.*.name, ','), 'test/full') && 'full' || '') || 'full' }}
+  ETCD_RUN_COLLECTION: false
 
 jobs:
   publish_e2e_image:

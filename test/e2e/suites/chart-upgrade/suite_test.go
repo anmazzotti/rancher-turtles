@@ -147,6 +147,12 @@ var _ = SynchronizedAfterSuite(
 	func() {
 	},
 	func() {
+		By("Collecting ETCD Data")
+		testenv.RunCollectETCDData(ctx, testenv.RunCollectETCDDataInput{
+			ClusterName:   bootstrapClusterProxy.GetName(),
+			ContainerName: bootstrapClusterProxy.GetName() + "-control-plane",
+		})
+
 		By("Dumping artifacts from the bootstrap cluster")
 		testenv.DumpBootstrapCluster(ctx, bootstrapClusterProxy.GetKubeconfigPath())
 

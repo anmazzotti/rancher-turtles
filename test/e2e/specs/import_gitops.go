@@ -345,6 +345,12 @@ func CreateUsingGitOpsSpec(ctx context.Context, inputGetter func() CreateUsingGi
 	})
 
 	AfterEach(func() {
+		By("Collecting ETCD Data")
+		testenv.RunCollectETCDData(ctx, testenv.RunCollectETCDDataInput{
+			ClusterName:   input.ClusterName + "-bootstrap-" + specName,
+			ContainerName: input.BootstrapClusterProxy.GetName() + "-control-plane",
+		})
+
 		By(fmt.Sprintf("Collecting artifacts for %s/%s", input.ClusterName, specName))
 		testenv.TryCollectArtifacts(ctx, testenv.CollectArtifactsInput{
 			Path:                    input.ClusterName + "-bootstrap-" + specName,
