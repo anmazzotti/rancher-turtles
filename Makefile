@@ -33,7 +33,7 @@ REPO ?= rancher/turtles
 CAPI_VERSION ?= $(shell grep "sigs.k8s.io/cluster-api" go.mod | head -1 |awk '{print $$NF}')
 CAPI_UPSTREAM_REPO ?= https://github.com/kubernetes-sigs/cluster-api
 CAPI_UPSTREAM_RELEASES ?= $(CAPI_UPSTREAM_REPO)/releases
-CAPI_MANIFEST_UPDATE_VERSION ?= $(shell curl -s "https://api.github.com/repos/rancher-sandbox/cluster-api/releases/latest" | jq -r ".tag_name")
+CAPI_MANIFEST_UPDATE_VERSION ?= $(shell curl -s "https://api.github.com/repos/rancher/cluster-api/releases/latest" | jq -r ".tag_name")
 CAPI_MANIFEST_OUTPUT_FILE ?= $(CHART_DIR)/templates/core-provider-configmap.yaml
 
 # Use GOPROXY environment variable if set
@@ -149,7 +149,7 @@ HELM_VER := v3.18.4
 HELM_BIN := helm
 HELM := $(TOOLS_BIN_DIR)/$(HELM_BIN)-$(HELM_VER)
 
-CLUSTERCTL_VER := v1.12.2
+CLUSTERCTL_VER := v1.13.1
 CLUSTERCTL_BIN := clusterctl
 CLUSTERCTL := $(TOOLS_BIN_DIR)/$(CLUSTERCTL_BIN)-$(CLUSTERCTL_VER)
 CLUSTERCTL_CONFIG_PATH := ${ROOT_DIR}/test/e2e/config/clusterctl-config.yaml
